@@ -4,6 +4,6 @@ Daily briefing for Suzanne Johnston (Asia/Bangkok).
 
 - Latest brief (Markdown): /latest.md
 - Human-readable page: /
-- Topics: tech, AI, entertainment, world news, Thai news, fun
-- Updated every morning ~06:11 Asia/Bangkok
-- Auto-deploy test: 2026-09-24 23:31 ICT
+- Archive today: /archive/2026-09-25.md
+- Topics: tech, AI, entertainment, world news, Thailand, expat life, food & drink, culture & local events, travel
+- Updated: Friday 25 September 2026 · Asia/Bangkok
