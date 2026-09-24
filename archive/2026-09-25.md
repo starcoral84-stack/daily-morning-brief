@@ -61,7 +61,7 @@ Free entry only · Bangkok / Thailand · list-only (enter yourself) · IG counts
 
 ## Bangkok freebies & free events
 
-- **Long Life Fest** — Free health/wellness experience festival (Allied + Creative Talk). When: **25–27 Sep**, 10:00–20:00. Where: Sphere Hall, 5F EMSphere (BTS Phrom Phong). Catch: free long-life pass but **pre-register on Zipevent** required. [Zipevent](https://www.zipeventapp.com/e/Long-Life-Fest)
+- **Long Life Fest** — Free health/wellness experience festival (Allianz Ayudhya + Creative Talk). When: **25–27 Sep**, 10:00–20:00. Where: Sphere Hall, 5F EMSphere (BTS Phrom Phong). Catch: free long-life pass but **pre-register on Zipevent** required. [Zipevent](https://www.zipeventapp.com/e/Long-Life-Fest)
 - **TYAD 2026 (Thailand Yoga Art & Dance)** — Free entry to booths, health checks, and many trial classes; ticketed full classes also available. When: **25–27 Sep**. Where: Avani Ratchada, floors 2–3 (near MRT Rama 9). Catch: free zone is walk-up; reserve popular classes via their form/LINE. [In News Bangkok](https://innewsbangkok.com/?p=18366)
 - **Museum Siam free museum days** — Free admission to *Contemporary Siam Dialogues: The Stranger* plus talks/workshops. When: now through **4 Oct** (Tue–Sun, 10:00–18:00; closed Mon). Where: Museum Siam, Sanam Chai Rd. Catch: none for entry. [Free in Bangkok](https://freeinbangkok.com/events/free-events/museum-siam-free-museum-days/)
 - **Bangkokian Museum** — Free look inside preserved 1930s–40s Bang Rak family homes. When: weekend **25–27 Sep**, 09:00–16:00. Where: 273 Saphan Yao Alley, Bang Rak. Catch: sign in with name/nationality at the guard station. [The Thaiger](https://thethaiger.com/guides/best-of/things-to-do/things-to-do-bangkok-september-25-to-27)
