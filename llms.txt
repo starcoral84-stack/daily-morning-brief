@@ -4,6 +4,6 @@ Daily briefing for Suzanne Johnston (Asia/Bangkok).
 
 - Latest brief (Markdown): /latest.md
 - Human-readable page: /
-- Archive today: /archive/2026-09-25.md
-- Topics: tech, AI, entertainment, world news, Thailand, expat life, food & drink, culture & local events, travel, competitions & giveaways, Bangkok freebies & free events
-- Updated: Friday 25 September 2026 · Asia/Bangkok
+- Archive today: /archive/2026-09-26.md
+- Topics: tech, AI, AI tools & tips, world news, Thailand, expat life, food & drink, culture & local events, travel, competitions & giveaways, Bangkok freebies & free events
+- Updated: Saturday 26 September 2026 · Asia/Bangkok
