@@ -194,6 +194,10 @@ function tabsHTML(tabs, here, cls) {
   const navHTML = tabs => '<div class="nav sd"><div class="wrap">' + tabsHTML(tabs, here, 'tab') + '</div></div>';
   const nav = host(navHTML(TABS.filter(t => !t.optional)), true);
   document.body.insertBefore(nav, document.body.firstChild);
+  // On the brief page (an <article> with <h2> sections), also load the dashboard layer.
+  if (document.querySelector('article h2') && !/\/(schedule|studio)\.html$/.test(location.pathname)) {
+    const bf = document.createElement('script'); bf.src = '/brief.js'; bf.defer = true; document.head.appendChild(bf);
+  }
   visibleTabs().then(tabs => { nav.shadowRoot.innerHTML = '<style>' + CSS + '</style>' + navHTML(tabs); });
   Promise.all([fetch('/schedule.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject()), loadEvents()]).then(res => {
     setData(res[0]);
