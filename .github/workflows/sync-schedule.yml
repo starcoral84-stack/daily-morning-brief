@@ -1,0 +1,46 @@
+name: Sync class schedule
+
+# Reads the company schedule (Google Sheet CSV export) and refreshes:
+#   - schedule.html      (full schedule page)
+#   - index.html         (the "Class schedule" card at the top of the brief)
+# Times are UTC; Bangkok is UTC+7.
+on:
+  schedule:
+    - cron: "45 22 * * *"   # 05:45 Bangkok - before the morning brief
+    - cron: "45 5 * * *"    # 12:45 Bangkok - before the 1:15 PM check
+    - cron: "45 12 * * *"   # 19:45 Bangkok - before the 8 PM check
+  push:
+    branches: [main]
+    paths: ["index.html"]   # re-add the card whenever the morning brief rewrites the page
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-schedule
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Refresh schedule files
+        env:
+          SCHEDULE_CSV_URL: ${{ secrets.SCHEDULE_CSV_URL }}
+        run: python3 schedule/sync_schedule.py
+
+      - name: Commit and push if anything changed
+        run: |
+          git config user.name "Schedule sync"
+          git config user.email "schedule-sync@users.noreply.github.com"
+          git add schedule.html index.html
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Sync class schedule"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

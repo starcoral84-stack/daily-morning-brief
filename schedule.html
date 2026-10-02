@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Class schedule</title>
+<style>
+  :root { color-scheme: light dark; --bg:#0f1115; --card:#181b22; --text:#e8eaef; --muted:#9aa3b2; --accent:#f5c542; --link:#7db4ff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f6f4ef; --card:#fff; --text:#1a1d24; --muted:#5c6575; --accent:#b8860b; --link:#0b57d0; }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+  a { color:var(--link); }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  .bar { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:.8rem; padding:.7rem 1rem; background:color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter:blur(8px); border-bottom:1px solid color-mix(in srgb,var(--muted) 25%,transparent); }
+  .burger { width:2.75rem; height:2.75rem; border-radius:12px; border:1px solid color-mix(in srgb,var(--muted) 35%,transparent); background:var(--card); display:grid; place-content:center; gap:.28rem; padding:0; }
+  .burger i { display:block; width:1.2rem; height:2px; background:var(--text); border-radius:2px; }
+  .bar h1 { font-size:1.05rem; margin:0; }
+  .bar small { display:block; color:var(--muted); font-size:.72rem; font-weight:400; }
+  main { max-width:42rem; margin:0 auto; padding:1rem 1rem 4rem; }
+  .view-title { font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:.4rem 0 0; }
+  h2.big { font-size:1.5rem; margin:.15rem 0 .4rem; line-height:1.2; }
+  .scrim { position:fixed; inset:0; z-index:9; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:opacity .2s; }
+  .drawer { position:fixed; z-index:10; top:0; bottom:0; left:0; width:min(18rem,84vw); background:var(--card); border-right:1px solid color-mix(in srgb,var(--muted) 30%,transparent); transform:translateX(-102%); transition:transform .22s ease; padding:1rem; overflow:auto; display:flex; flex-direction:column; gap:.4rem; }
+  body.open .drawer { transform:none; }
+  body.open .scrim { opacity:1; pointer-events:auto; }
+  .drawer h3 { margin:.2rem 0 .6rem; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .nav { text-align:left; padding:.8rem .9rem; border-radius:12px; border:1px solid transparent; background:transparent; font-size:1rem; }
+  .nav[aria-current="true"] { background:color-mix(in srgb,var(--accent) 16%,transparent); border-color:var(--accent); font-weight:650; }
+  .legend { margin-top:auto; padding-top:1rem; border-top:1px solid color-mix(in srgb,var(--muted) 30%,transparent); font-size:.85rem; }
+  .legend div { display:flex; align-items:center; gap:.5rem; margin:.4rem 0; }
+  .legend i { width:1rem; height:1rem; border-radius:5px; display:inline-block; }
+  .legend a { display:inline-block; margin-top:.6rem; }
+  .weeknav { display:flex; gap:.5rem; align-items:center; margin:.6rem 0 .2rem; }
+  .weeknav button { flex:1; white-space:nowrap; padding:.7rem; border-radius:12px; border:1px solid color-mix(in srgb,var(--muted) 35%,transparent); background:var(--card); font-weight:600; }
+  .weeknav .mid { flex:1.4; text-align:center; color:var(--muted); font-size:.88rem; }
+  .hrs { color:var(--muted); font-size:.85rem; margin:.2rem 0 .6rem; }
+.sd{--sd-card:var(--card,#181b22);--sd-text:var(--text,#e8eaef);--sd-muted:var(--muted,#9aa3b2);--sd-accent:var(--accent,#f5c542);--sd-line:color-mix(in srgb,var(--sd-muted) 30%,transparent);color:var(--sd-text)}
+.sd *{box-sizing:border-box}
+.sd-day{background:var(--sd-card);border:1px solid var(--sd-line);border-radius:14px;padding:.9rem 1rem;margin:.7rem 0}
+.sd-day.is-today{border-color:var(--sd-accent)}
+.sd-head{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.sd-chip{font-weight:700;font-size:.78rem;padding:.2rem .6rem;border-radius:999px;color:#1a1d24;min-width:2.9rem;text-align:center}
+.sd-date{font-weight:650}
+.sd-rel{margin-left:auto;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--sd-accent);font-weight:700}
+.sd-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.8rem 0 .5rem}
+.sd-tile{background:color-mix(in srgb,var(--sd-muted) 12%,transparent);border-radius:10px;padding:.5rem .6rem;min-width:0}
+.sd-tile b{display:block;font-size:1.02rem;white-space:nowrap}
+.sd-tile span{font-size:.66rem;color:var(--sd-muted);text-transform:uppercase;letter-spacing:.04em}
+.sd-tile.alarm{outline:2px solid var(--sd-accent);outline-offset:-2px}
+.sd-list{list-style:none;margin:0;padding:0}
+.sd-cl{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .6rem;padding:.5rem 0;border-top:1px solid var(--sd-line);font-size:.92rem}
+.sd-tm{font-variant-numeric:tabular-nums;color:var(--sd-muted);min-width:11.2rem}
+.sd-pill{font-size:.7rem;font-weight:700;padding:.12rem .55rem;border-radius:999px;color:#1a1d24;white-space:nowrap}
+.t-home{background:#F9CB9C}.t-onsite{background:#9FC5E8}.t-online{background:#D9D2E9}.t-other{background:#d0d4db}
+.sd-nm{min-width:0;overflow-wrap:anywhere}
+.sd-rest{color:var(--sd-muted);margin:.55rem 0 .1rem;font-size:.92rem}
+.sd-foot{color:var(--sd-muted);font-size:.8rem;margin:.6rem 0 0}
+.sd-row{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem .1rem;border-top:1px solid var(--sd-line)}
+.sd-row.is-today{background:color-mix(in srgb,var(--sd-accent) 12%,transparent);border-radius:10px;padding-left:.5rem;padding-right:.5rem}
+.sd-row.is-rest{opacity:.55;padding:.35rem .1rem}
+.sd-row .sd-chip{margin-top:.1rem}
+.sd-main{flex:1;min-width:0}
+.sd-main .sd-date{font-size:.92rem}
+.sd-mini{list-style:none;margin:.2rem 0 0;padding:0;font-size:.84rem;color:var(--sd-muted)}
+.sd-mini li{margin:.3rem 0;display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .1rem}
+.sd-mtm{white-space:nowrap;font-variant-numeric:tabular-nums;margin-right:.2rem}
+.sd-mini .sd-pill{font-size:.64rem;margin:0 .4rem}
+.sd-side{text-align:right;font-size:.82rem;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.5}
+.sd-side small{color:var(--sd-muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;margin-right:.15rem}
+.sd-week{margin:1.4rem 0 .2rem;display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;color:var(--sd-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:650}
+@media (max-width:30rem){.sd-tm{min-width:100%}}
+
+</style>
+</head>
+<body>
+<header class="bar">
+  <button class="burger" id="burger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
+  <h1>Class schedule<small id="upd"></small></h1>
+</header>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Menu">
+  <h3>Views</h3>
+  <button class="nav" data-view="next">Today &amp; tomorrow</button>
+  <button class="nav" data-view="week">This week</button>
+  <button class="nav" data-view="month">Full schedule</button>
+  <div class="legend sd">
+    <div><i class="t-home"></i> Student home</div>
+    <div><i class="t-onsite"></i> Group on-site</div>
+    <div><i class="t-online"></i> Group online</div>
+    <div class="sd-foot">⏰ Start = last class finish − 9 hours</div>
+    <a href="/">← Morning brief</a>
+  </div>
+</aside>
+<main class="sd" id="view"></main>
+<script type="application/json" id="sched-data">{"title":"Suzie's October Schedule","days":[{"date":"2026-09-28","classes":[]},{"date":"2026-09-29","classes":[]},{"date":"2026-09-30","classes":[]},{"date":"2026-10-01","classes":[{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-02","classes":[]},{"date":"2026-10-03","classes":[]},{"date":"2026-10-04","classes":[]},{"date":"2026-10-05","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"18:30","end":"20:30","type":"onsite","name":"A1.1: SS 7"}]},{"date":"2026-10-06","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-07","classes":[{"start":"13:00","end":"14:30","type":"home","name":"202609188102"},{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – First Impressions & Personal Identity"}]},{"date":"2026-10-08","classes":[{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-09","classes":[{"start":"13:00","end":"15:00","type":"onsite","name":"A1.1: SS 8"},{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Connections & People Around You"}]},{"date":"2026-10-10","classes":[]},{"date":"2026-10-11","classes":[]},{"date":"2026-10-12","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"18:30","end":"20:30","type":"onsite","name":"A1.1: SS 9"}]},{"date":"2026-10-13","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-14","classes":[{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Everyday Belongings & Smart Shopping"}]},{"date":"2026-10-15","classes":[{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-16","classes":[{"start":"13:00","end":"15:00","type":"onsite","name":"A1.1: SS 10"},{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Daily Life, Meals & Routines"}]},{"date":"2026-10-17","classes":[]},{"date":"2026-10-18","classes":[]},{"date":"2026-10-19","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"18:30","end":"20:30","type":"onsite","name":"A1.2: SS 1"}]},{"date":"2026-10-20","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-21","classes":[{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Workplace Skills, Abilities & Celebrations"}]},{"date":"2026-10-22","classes":[{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-23","classes":[{"start":"13:00","end":"15:00","type":"onsite","name":"A1.2: SS 2"},{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Homes, Neighborhoods & Finding Your Way"}]},{"date":"2026-10-24","classes":[]},{"date":"2026-10-25","classes":[]},{"date":"2026-10-26","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"18:30","end":"20:30","type":"onsite","name":"A1.2: SS 3"}]},{"date":"2026-10-27","classes":[{"start":"12:00","end":"14:00","type":"home","name":"202608297845"},{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-28","classes":[{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Well-being, Fitness & Childhood Memories"}]},{"date":"2026-10-29","classes":[{"start":"16:30","end":"18:30","type":"home","name":"1714106276"}]},{"date":"2026-10-30","classes":[{"start":"13:00","end":"15:00","type":"onsite","name":"A1.2: SS 4"},{"start":"18:30","end":"19:30","type":"online","name":"Speak Up! – Weekend Getaways, Past Adventures & New Goals"}]},{"date":"2026-10-31","classes":[]},{"date":"2026-11-01","classes":[]}],"updated":"2026-10-02T13:47:02+07:00"}</script>
+<script>
+const SD = JSON.parse(document.getElementById('sched-data').textContent);
+const DAYS = SD.days, BY = {};
+DAYS.forEach(d => { BY[d.date] = d; });
+const TYPES = {
+  home:   { label: 'Student home',  short: 'Home',    cls: 't-home' },
+  onsite: { label: 'Group on-site', short: 'On-site', cls: 't-onsite' },
+  online: { label: 'Group online',  short: 'Online',  cls: 't-online' },
+  other:  { label: 'Class',         short: 'Class',   cls: 't-other' }
+};
+const THAI = { Mon:'#FFD966', Tue:'#F4B6C2', Wed:'#93C47D', Thu:'#F6B26B', Fri:'#6FA8DC', Sat:'#B4A7D6', Sun:'#E06666' };
+const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function todayBkk() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bangkok' }).format(new Date()); }
+function addDays(ds, n) { const p = ds.split('-').map(Number); return new Date(Date.UTC(p[0], p[1]-1, p[2]+n)).toISOString().slice(0,10); }
+function parts(ds) { const p = ds.split('-').map(Number); const dt = new Date(Date.UTC(p[0], p[1]-1, p[2])); return { d: p[2], dow: DOW[dt.getUTCDay()], mon: MON[p[1]-1] }; }
+function mins(t) { const p = t.split(':').map(Number); return p[0]*60 + p[1]; }
+function f12(min) { min = ((min % 1440) + 1440) % 1440; let h = Math.floor(min/60); const m = min % 60; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + String(m).padStart(2,'0') + ' ' + ap; }
+function summary(day) {
+  const c = (day && day.classes) || [];
+  if (!c.length) return null;
+  const first = Math.min.apply(null, c.map(x => mins(x.start)));
+  const fin = Math.max.apply(null, c.map(x => mins(x.end)));
+  const hrs = c.reduce((a, x) => a + mins(x.end) - mins(x.start), 0) / 60;
+  return { first: first, fin: fin, start: fin - 540, hrs: hrs };
+}
+function hrsLabel(h) { return (Math.round(h * 100) / 100) + ' h'; }
+function chip(ds) { const p = parts(ds); return '<span class="sd-chip" style="background:' + THAI[p.dow] + '">' + p.dow + '</span>'; }
+function dateLabel(ds) { const p = parts(ds); return p.dow + ' ' + p.d + ' ' + p.mon; }
+function shortDate(ds) { const p = parts(ds); return p.d + ' ' + p.mon; }
+function rng(a, b) { const x = f12(a), y = f12(b); return (x.slice(-2) === y.slice(-2) ? x.slice(0, -3) : x) + '–' + y; }
+function classLine(c) {
+  const t = TYPES[c.type] || TYPES.other;
+  return '<li class="sd-cl"><span class="sd-tm">' + f12(mins(c.start)) + ' – ' + f12(mins(c.end)) +
+    '</span><span class="sd-pill ' + t.cls + '">' + t.label + '</span><span class="sd-nm">' + esc(c.name) + '</span></li>';
+}
+function dayCard(ds, rel, today) {
+  const day = BY[ds], s = summary(day);
+  let h = '<section class="sd-day' + (ds === today ? ' is-today' : '') + '"><div class="sd-head">' + chip(ds) +
+    '<span class="sd-date">' + shortDate(ds) + '</span>' + (rel ? '<span class="sd-rel">' + rel + '</span>' : '') + '</div>';
+  if (!day) { return h + '<p class="sd-rest">Not in the schedule yet.</p></section>'; }
+  if (!s) { return h + '<p class="sd-rest">Rest day – no classes.</p></section>'; }
+  h += '<div class="sd-tiles"><div class="sd-tile alarm"><span>⏰ Start</span><b>' + f12(s.start) + '</b></div>' +
+    '<div class="sd-tile"><span>First class</span><b>' + f12(s.first) + '</b></div>' +
+    '<div class="sd-tile alarm"><span>⏰ Finish</span><b>' + f12(s.fin) + '</b></div></div><ul class="sd-list">' +
+    day.classes.map(classLine).join('') + '</ul></section>';
+  return h;
+}
+function miniRow(ds, today) {
+  const day = BY[ds], s = summary(day);
+  const cls = ds === today ? ' is-today' : '';
+  if (!s) {
+    return '<div class="sd-row is-rest' + cls + '">' + chip(ds) + '<div class="sd-main"><span class="sd-date">' + shortDate(ds) + '</span> <span class="sd-foot">· rest</span></div></div>';
+  }
+  const items = day.classes.map(c => { const t = TYPES[c.type] || TYPES.other;
+    return '<li><span class="sd-mtm">' + rng(mins(c.start), mins(c.end)) + '</span><span class="sd-pill ' + t.cls + '">' + t.short + '</span><span class="sd-nm">' + esc(c.name) + '</span></li>'; }).join('');
+  return '<div class="sd-row' + cls + '">' + chip(ds) + '<div class="sd-main"><span class="sd-date">' + shortDate(ds) +
+    '</span><ul class="sd-mini">' + items + '</ul></div><div class="sd-side"><div><small>Start</small> <b>' + f12(s.start) + '</b></div><div><small>Finish</small> <b>' + f12(s.fin) + '</b></div></div></div>';
+}
+function mondayOf(ds) { const p = parts(ds); const back = (DOW.indexOf(p.dow) + 6) % 7; return addDays(ds, -back); }
+function updatedLabel() {
+  if (!SD.updated) return '';
+  const p = SD.updated.slice(0, 10);
+  return 'Schedule last changed ' + dateLabel(p);
+}
+
+const view = document.getElementById('view');
+let current = 'next', weekOffset = 0;
+function setOpen(o) { document.body.classList.toggle('open', o); document.getElementById('burger').setAttribute('aria-expanded', o ? 'true' : 'false'); }
+document.getElementById('burger').addEventListener('click', () => setOpen(!document.body.classList.contains('open')));
+document.getElementById('scrim').addEventListener('click', () => setOpen(false));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+document.querySelectorAll('.nav').forEach(b => b.addEventListener('click', () => { go(b.dataset.view); setOpen(false); }));
+function renderNext() {
+  const today = todayBkk(), tomorrow = addDays(today, 1);
+  const p = parts(today);
+  let h = '<p class="view-title">Today &amp; tomorrow</p><h2 class="big">' + p.dow + ' ' + p.d + ' ' + p.mon + '</h2>' + dayCard(today, 'Today', today) + dayCard(tomorrow, 'Tomorrow', today);
+  if (!summary(BY[tomorrow])) {
+    let n = addDays(tomorrow, 1), i = 0;
+    while (i < 14 && !summary(BY[n])) { n = addDays(n, 1); i++; }
+    if (summary(BY[n])) h += dayCard(n, 'Next class day', today);
+  }
+  return h;
+}
+function weekHours(mon) { let t = 0; for (let i = 0; i < 7; i++) { const s = summary(BY[addDays(mon, i)]); if (s) t += s.hrs; } return t; }
+function renderWeek() {
+  const today = todayBkk(), mon = addDays(mondayOf(today), weekOffset * 7), sun = addDays(mon, 6);
+  let h = '<p class="view-title">This week</p><h2 class="big">' + dateLabel(mon) + ' – ' + dateLabel(sun) + '</h2>' +
+    '<div class="weeknav"><button data-w="-1">‹ Previous</button><span class="mid">' + (weekOffset === 0 ? 'This week' : (weekOffset > 0 ? '+' : '') + weekOffset + ' wk') + '</span><button data-w="1">Next ›</button></div>' +
+    '<p class="hrs">' + hrsLabel(weekHours(mon)) + ' teaching this week</p>';
+  for (let i = 0; i < 7; i++) { h += miniRow(addDays(mon, i), today); }
+  return h;
+}
+function renderMonth() {
+  const today = todayBkk();
+  let h = '<p class="view-title">Full schedule</p><h2 class="big">' + esc(SD.title || 'Schedule') + '</h2>';
+  if (!DAYS.length) return h + '<p class="sd-rest">Nothing in the schedule yet.</p>';
+  let mon = mondayOf(DAYS[0].date); const last = DAYS[DAYS.length - 1].date;
+  while (mon <= last) {
+    h += '<div class="sd-week"><span>Week of ' + dateLabel(mon) + '</span><span>' + hrsLabel(weekHours(mon)) + '</span></div>';
+    for (let i = 0; i < 7; i++) { const ds = addDays(mon, i); if (BY[ds]) h += miniRow(ds, today); }
+    mon = addDays(mon, 7);
+  }
+  return h;
+}
+function go(v) {
+  current = v; if (v !== 'week') weekOffset = 0;
+  view.innerHTML = v === 'week' ? renderWeek() : v === 'month' ? renderMonth() : renderNext();
+  document.querySelectorAll('.nav').forEach(b => b.setAttribute('aria-current', b.dataset.view === v ? 'true' : 'false'));
+  view.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => { weekOffset += Number(b.dataset.w); go('week'); }));
+  history.replaceState(null, '', '#' + v);
+  window.scrollTo(0, 0);
+}
+document.getElementById('upd').textContent = updatedLabel();
+const start = location.hash.replace('#', '');
+go(['next', 'week', 'month'].indexOf(start) >= 0 ? start : 'next');
+</script>
+</body>
+</html>

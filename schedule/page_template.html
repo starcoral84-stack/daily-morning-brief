@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Class schedule</title>
+<style>
+  :root { color-scheme: light dark; --bg:#0f1115; --card:#181b22; --text:#e8eaef; --muted:#9aa3b2; --accent:#f5c542; --link:#7db4ff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f6f4ef; --card:#fff; --text:#1a1d24; --muted:#5c6575; --accent:#b8860b; --link:#0b57d0; }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+  a { color:var(--link); }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  .bar { position:sticky; top:0; z-index:5; display:flex; align-items:center; gap:.8rem; padding:.7rem 1rem; background:color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter:blur(8px); border-bottom:1px solid color-mix(in srgb,var(--muted) 25%,transparent); }
+  .burger { width:2.75rem; height:2.75rem; border-radius:12px; border:1px solid color-mix(in srgb,var(--muted) 35%,transparent); background:var(--card); display:grid; place-content:center; gap:.28rem; padding:0; }
+  .burger i { display:block; width:1.2rem; height:2px; background:var(--text); border-radius:2px; }
+  .bar h1 { font-size:1.05rem; margin:0; }
+  .bar small { display:block; color:var(--muted); font-size:.72rem; font-weight:400; }
+  main { max-width:42rem; margin:0 auto; padding:1rem 1rem 4rem; }
+  .view-title { font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:.4rem 0 0; }
+  h2.big { font-size:1.5rem; margin:.15rem 0 .4rem; line-height:1.2; }
+  .scrim { position:fixed; inset:0; z-index:9; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:opacity .2s; }
+  .drawer { position:fixed; z-index:10; top:0; bottom:0; left:0; width:min(18rem,84vw); background:var(--card); border-right:1px solid color-mix(in srgb,var(--muted) 30%,transparent); transform:translateX(-102%); transition:transform .22s ease; padding:1rem; overflow:auto; display:flex; flex-direction:column; gap:.4rem; }
+  body.open .drawer { transform:none; }
+  body.open .scrim { opacity:1; pointer-events:auto; }
+  .drawer h3 { margin:.2rem 0 .6rem; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .nav { text-align:left; padding:.8rem .9rem; border-radius:12px; border:1px solid transparent; background:transparent; font-size:1rem; }
+  .nav[aria-current="true"] { background:color-mix(in srgb,var(--accent) 16%,transparent); border-color:var(--accent); font-weight:650; }
+  .legend { margin-top:auto; padding-top:1rem; border-top:1px solid color-mix(in srgb,var(--muted) 30%,transparent); font-size:.85rem; }
+  .legend div { display:flex; align-items:center; gap:.5rem; margin:.4rem 0; }
+  .legend i { width:1rem; height:1rem; border-radius:5px; display:inline-block; }
+  .legend a { display:inline-block; margin-top:.6rem; }
+  .weeknav { display:flex; gap:.5rem; align-items:center; margin:.6rem 0 .2rem; }
+  .weeknav button { flex:1; white-space:nowrap; padding:.7rem; border-radius:12px; border:1px solid color-mix(in srgb,var(--muted) 35%,transparent); background:var(--card); font-weight:600; }
+  .weeknav .mid { flex:1.4; text-align:center; color:var(--muted); font-size:.88rem; }
+  .hrs { color:var(--muted); font-size:.85rem; margin:.2rem 0 .6rem; }
+<!--CSS-->
+</style>
+</head>
+<body>
+<header class="bar">
+  <button class="burger" id="burger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
+  <h1>Class schedule<small id="upd"></small></h1>
+</header>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Menu">
+  <h3>Views</h3>
+  <button class="nav" data-view="next">Today &amp; tomorrow</button>
+  <button class="nav" data-view="week">This week</button>
+  <button class="nav" data-view="month">Full schedule</button>
+  <div class="legend sd">
+    <div><i class="t-home"></i> Student home</div>
+    <div><i class="t-onsite"></i> Group on-site</div>
+    <div><i class="t-online"></i> Group online</div>
+    <div class="sd-foot">⏰ Start = last class finish − 9 hours</div>
+    <a href="/">← Morning brief</a>
+  </div>
+</aside>
+<main class="sd" id="view"></main>
+<script type="application/json" id="sched-data"><!--DATA--></script>
+<script>
+<!--CORE-->
+const view = document.getElementById('view');
+let current = 'next', weekOffset = 0;
+function setOpen(o) { document.body.classList.toggle('open', o); document.getElementById('burger').setAttribute('aria-expanded', o ? 'true' : 'false'); }
+document.getElementById('burger').addEventListener('click', () => setOpen(!document.body.classList.contains('open')));
+document.getElementById('scrim').addEventListener('click', () => setOpen(false));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
+document.querySelectorAll('.nav').forEach(b => b.addEventListener('click', () => { go(b.dataset.view); setOpen(false); }));
+function renderNext() {
+  const today = todayBkk(), tomorrow = addDays(today, 1);
+  const p = parts(today);
+  let h = '<p class="view-title">Today &amp; tomorrow</p><h2 class="big">' + p.dow + ' ' + p.d + ' ' + p.mon + '</h2>' + dayCard(today, 'Today', today) + dayCard(tomorrow, 'Tomorrow', today);
+  if (!summary(BY[tomorrow])) {
+    let n = addDays(tomorrow, 1), i = 0;
+    while (i < 14 && !summary(BY[n])) { n = addDays(n, 1); i++; }
+    if (summary(BY[n])) h += dayCard(n, 'Next class day', today);
+  }
+  return h;
+}
+function weekHours(mon) { let t = 0; for (let i = 0; i < 7; i++) { const s = summary(BY[addDays(mon, i)]); if (s) t += s.hrs; } return t; }
+function renderWeek() {
+  const today = todayBkk(), mon = addDays(mondayOf(today), weekOffset * 7), sun = addDays(mon, 6);
+  let h = '<p class="view-title">This week</p><h2 class="big">' + dateLabel(mon) + ' – ' + dateLabel(sun) + '</h2>' +
+    '<div class="weeknav"><button data-w="-1">‹ Previous</button><span class="mid">' + (weekOffset === 0 ? 'This week' : (weekOffset > 0 ? '+' : '') + weekOffset + ' wk') + '</span><button data-w="1">Next ›</button></div>' +
+    '<p class="hrs">' + hrsLabel(weekHours(mon)) + ' teaching this week</p>';
+  for (let i = 0; i < 7; i++) { h += miniRow(addDays(mon, i), today); }
+  return h;
+}
+function renderMonth() {
+  const today = todayBkk();
+  let h = '<p class="view-title">Full schedule</p><h2 class="big">' + esc(SD.title || 'Schedule') + '</h2>';
+  if (!DAYS.length) return h + '<p class="sd-rest">Nothing in the schedule yet.</p>';
+  let mon = mondayOf(DAYS[0].date); const last = DAYS[DAYS.length - 1].date;
+  while (mon <= last) {
+    h += '<div class="sd-week"><span>Week of ' + dateLabel(mon) + '</span><span>' + hrsLabel(weekHours(mon)) + '</span></div>';
+    for (let i = 0; i < 7; i++) { const ds = addDays(mon, i); if (BY[ds]) h += miniRow(ds, today); }
+    mon = addDays(mon, 7);
+  }
+  return h;
+}
+function go(v) {
+  current = v; if (v !== 'week') weekOffset = 0;
+  view.innerHTML = v === 'week' ? renderWeek() : v === 'month' ? renderMonth() : renderNext();
+  document.querySelectorAll('.nav').forEach(b => b.setAttribute('aria-current', b.dataset.view === v ? 'true' : 'false'));
+  view.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => { weekOffset += Number(b.dataset.w); go('week'); }));
+  history.replaceState(null, '', '#' + v);
+  window.scrollTo(0, 0);
+}
+document.getElementById('upd').textContent = updatedLabel();
+const start = location.hash.replace('#', '');
+go(['next', 'week', 'month'].indexOf(start) >= 0 ? start : 'next');
+</script>
+</body>
+</html>
