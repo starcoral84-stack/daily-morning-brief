@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Sync the company class schedule (Google Sheet, CSV export) into the morning-brief site.
 
-Reads the weekly grid from the sheet, then writes:
-  - schedule.html  : full schedule page (single self-contained file)
-  - index.html     : a "Class schedule" card between <!-- SCHEDULE:START/END --> markers
-                     (inserted after </header> if the markers are missing)
+Reads the weekly grid from the sheet, then writes ONLY these files (Claude's lane):
+  - schedule.html  : the Schedule tab (single self-contained file)
+  - schedule.json  : the same data, for tabs.js
+  - tabs.js        : tab bar + today/tomorrow strip, loaded by the brief with one script tag
+It never reads or writes index.html, latest.md, llms.txt, archive/ or _headers
+(those belong to the daily brief updater).
 
 The sheet URL is NOT stored in this repo. Pass it with the SCHEDULE_CSV_URL
 environment variable (a GitHub Actions secret), or use --file for a local CSV.
@@ -213,24 +215,12 @@ def main():
     css, core = read(os.path.join(HERE, "core.css")), read(os.path.join(HERE, "core.js"))
     page = render(read(os.path.join(HERE, "page_template.html")),
                   **{"<!--CSS-->": css, "<!--DATA-->": blob, "<!--CORE-->": core})
-    card = render(read(os.path.join(HERE, "card_template.html")),
-                  **{"/*__CSS__*/": css, "/*__DATA__*/": blob, "/*__CORE__*/": core})
-
-    with open(sched_path, "w", encoding="utf-8") as f:
-        f.write(page)
-
-    index_path = os.path.join(a.out, "index.html")
-    if os.path.exists(index_path):
-        html = read(index_path)
-        block = re.compile(r"<!-- SCHEDULE:START -->.*?<!-- SCHEDULE:END -->\n?", re.S)
-        if block.search(html):
-            html = block.sub(lambda m: card, html, count=1)
-        elif "</header>" in html:
-            html = html.replace("</header>", "</header>\n" + card, 1)
-        else:
-            print("warning: no </header> or markers in index.html - card not inserted", file=sys.stderr)
-        with open(index_path, "w", encoding="utf-8") as f:
-            f.write(html)
+    tabs = render(read(os.path.join(HERE, "tabs_template.js")),
+                  **{"/*__CSS__*/": css, "/*__CORE__*/": core})
+    js_blob = json.dumps(data, ensure_ascii=False, indent=1) + "\n"
+    for name, content in (("schedule.html", page), ("schedule.json", js_blob), ("tabs.js", tabs)):
+        with open(os.path.join(a.out, name), "w", encoding="utf-8") as f:
+            f.write(content)
 
     n_classes = sum(len(d["classes"]) for d in data["days"])
     print("ok: %d days, %d classes, title=%r" % (len(data["days"]), n_classes, data["title"]))

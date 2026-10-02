@@ -1,6 +1,5 @@
-const SD = JSON.parse(document.getElementById('sched-data').textContent);
-const DAYS = SD.days, BY = {};
-DAYS.forEach(d => { BY[d.date] = d; });
+let SD = { days: [] }, DAYS = [], BY = {};
+function setData(o) { SD = o; DAYS = o.days || []; BY = {}; DAYS.forEach(d => { BY[d.date] = d; }); }
 const TYPES = {
   home:   { label: 'Student home',  short: 'Home',    cls: 't-home' },
   onsite: { label: 'Group on-site', short: 'On-site', cls: 't-onsite' },

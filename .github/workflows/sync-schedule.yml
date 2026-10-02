@@ -1,17 +1,14 @@
 name: Sync class schedule
 
 # Reads the company schedule (Google Sheet CSV export) and refreshes:
-#   - schedule.html      (full schedule page)
-#   - index.html         (the "Class schedule" card at the top of the brief)
+#   - schedule.html, schedule.json, tabs.js   (Claude's files only)
+# It never touches index.html, latest.md, llms.txt or archive/ (the daily brief updater's files).
 # Times are UTC; Bangkok is UTC+7.
 on:
   schedule:
     - cron: "45 22 * * *"   # 05:45 Bangkok - before the morning brief
     - cron: "45 5 * * *"    # 12:45 Bangkok - before the 1:15 PM check
     - cron: "45 12 * * *"   # 19:45 Bangkok - before the 8 PM check
-  push:
-    branches: [main]
-    paths: ["index.html"]   # re-add the card whenever the morning brief rewrites the page
   workflow_dispatch:
 
 permissions:
@@ -36,7 +33,7 @@ jobs:
         run: |
           git config user.name "Schedule sync"
           git config user.email "schedule-sync@users.noreply.github.com"
-          git add schedule.html index.html
+          git add schedule.html schedule.json tabs.js
           if git diff --cached --quiet; then
             echo "No changes."
           else

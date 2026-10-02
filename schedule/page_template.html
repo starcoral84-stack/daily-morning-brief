@@ -19,6 +19,9 @@
   .burger i { display:block; width:1.2rem; height:2px; background:var(--text); border-radius:2px; }
   .bar h1 { font-size:1.05rem; margin:0; }
   .bar small { display:block; color:var(--muted); font-size:.72rem; font-weight:400; }
+  .tabs { display:flex; gap:.5rem; max-width:42rem; margin:0 auto; padding:.6rem 1rem 0; }
+  .tabs a { flex:1; text-align:center; padding:.6rem .8rem; border-radius:12px; text-decoration:none; font-weight:600; color:var(--text); border:1px solid color-mix(in srgb,var(--muted) 35%,transparent); }
+  .tabs a[aria-current="page"] { background:color-mix(in srgb,var(--accent) 18%,transparent); border-color:var(--accent); }
   main { max-width:42rem; margin:0 auto; padding:1rem 1rem 4rem; }
   .view-title { font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:.4rem 0 0; }
   h2.big { font-size:1.5rem; margin:.15rem 0 .4rem; line-height:1.2; }
@@ -45,6 +48,7 @@
   <button class="burger" id="burger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
   <h1>Class schedule<small id="upd"></small></h1>
 </header>
+<nav class="tabs" aria-label="Site tabs"><a href="/">Morning brief</a><a href="/schedule.html" aria-current="page">Schedule</a></nav>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-label="Menu">
   <h3>Views</h3>
@@ -63,6 +67,7 @@
 <script type="application/json" id="sched-data"><!--DATA--></script>
 <script>
 <!--CORE-->
+setData(JSON.parse(document.getElementById('sched-data').textContent));
 const view = document.getElementById('view');
 let current = 'next', weekOffset = 0;
 function setOpen(o) { document.body.classList.toggle('open', o); document.getElementById('burger').setAttribute('aria-expanded', o ? 'true' : 'false'); }
