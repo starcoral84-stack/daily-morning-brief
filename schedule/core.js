@@ -62,3 +62,13 @@ function updatedLabel() {
   const p = SD.updated.slice(0, 10);
   return 'Schedule last changed ' + dateLabel(p);
 }
+
+const TABS = /*__TABS__*/[];
+function visibleTabs() {
+  return Promise.all(TABS.map(t => t.optional
+    ? fetch(t.href, { method: 'HEAD', cache: 'no-store' }).then(r => r.ok ? t : null).catch(() => null)
+    : Promise.resolve(t))).then(a => a.filter(Boolean));
+}
+function tabsHTML(tabs, here, cls) {
+  return tabs.map(t => '<a class="' + cls + '" href="' + t.href + '"' + (t.href === here ? ' aria-current="page"' : '') + '>' + esc(t.label) + '</a>').join('');
+}

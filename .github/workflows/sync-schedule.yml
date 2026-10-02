@@ -27,7 +27,12 @@ jobs:
       - name: Refresh schedule files
         env:
           SCHEDULE_CSV_URL: ${{ secrets.SCHEDULE_CSV_URL }}
-        run: python3 schedule/sync_schedule.py
+        run: |
+          if [ -z "$SCHEDULE_CSV_URL" ]; then
+            echo "::notice::SCHEDULE_CSV_URL secret is not set yet - skipping this run."
+            exit 0
+          fi
+          python3 schedule/sync_schedule.py
 
       - name: Commit and push if anything changed
         run: |

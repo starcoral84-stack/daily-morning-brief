@@ -48,7 +48,7 @@
   <button class="burger" id="burger" aria-label="Open menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
   <h1>Class schedule<small id="upd"></small></h1>
 </header>
-<nav class="tabs" aria-label="Site tabs"><a href="/">Morning brief</a><a href="/schedule.html" aria-current="page">Schedule</a></nav>
+<nav class="tabs" id="tabs" aria-label="Site tabs"></nav>
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-label="Menu">
   <h3>Views</h3>
@@ -68,6 +68,9 @@
 <script>
 <!--CORE-->
 setData(JSON.parse(document.getElementById('sched-data').textContent));
+const tabsEl = document.getElementById('tabs');
+tabsEl.innerHTML = tabsHTML(TABS.filter(t => !t.optional), '/schedule.html', '');
+visibleTabs().then(tabs => { tabsEl.innerHTML = tabsHTML(tabs, '/schedule.html', ''); });
 const view = document.getElementById('view');
 let current = 'next', weekOffset = 0;
 function setOpen(o) { document.body.classList.toggle('open', o); document.getElementById('burger').setAttribute('aria-expanded', o ? 'true' : 'false'); }

@@ -23,6 +23,14 @@ DAY_RE = re.compile(r"^\s*(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\w*,\s*(\d{1,2})\b", re.I
 TIME_RE = re.compile(r"\(\s*(\d{1,2}:\d{2}\s*[AP]M)\s*-\s*(\d{1,2}:\d{2}\s*[AP]M)\s*\)\s*$", re.I)
 TRAIL_RE = re.compile(r"\s+(onsite|on-site|group online|online|e-learning)\s*$", re.I)
 
+# Tab bar. Claude keeps this list; pages marked optional only show once the file exists
+# (so a tab never leads to a 404). The page behind each tab is owned by its own helper.
+TABS = [
+    {"label": "Morning brief", "href": "/"},
+    {"label": "Schedule", "href": "/schedule.html"},
+    {"label": "Studio", "href": "/studio.html", "optional": True},
+]
+
 # The sheet does not list Speak Up! topics; keep them here, keyed by date (optional).
 TOPICS = {
     "2026-10-07": "First Impressions & Personal Identity",
@@ -213,6 +221,7 @@ def main():
     blob = data_json(data)
 
     css, core = read(os.path.join(HERE, "core.css")), read(os.path.join(HERE, "core.js"))
+    core = core.replace("/*__TABS__*/[]", json.dumps(TABS))
     page = render(read(os.path.join(HERE, "page_template.html")),
                   **{"<!--CSS-->": css, "<!--DATA-->": blob, "<!--CORE-->": core})
     tabs = render(read(os.path.join(HERE, "tabs_template.js")),

@@ -70,6 +70,16 @@ function updatedLabel() {
   return 'Schedule last changed ' + dateLabel(p);
 }
 
+const TABS = [{"label": "Morning brief", "href": "/"}, {"label": "Schedule", "href": "/schedule.html"}, {"label": "Studio", "href": "/studio.html", "optional": true}];
+function visibleTabs() {
+  return Promise.all(TABS.map(t => t.optional
+    ? fetch(t.href, { method: 'HEAD', cache: 'no-store' }).then(r => r.ok ? t : null).catch(() => null)
+    : Promise.resolve(t))).then(a => a.filter(Boolean));
+}
+function tabsHTML(tabs, here, cls) {
+  return tabs.map(t => '<a class="' + cls + '" href="' + t.href + '"' + (t.href === here ? ' aria-current="page"' : '') + '>' + esc(t.label) + '</a>').join('');
+}
+
   const CSS = `.sd{--sd-card:var(--card,#181b22);--sd-text:var(--text,#e8eaef);--sd-muted:var(--muted,#9aa3b2);--sd-accent:var(--accent,#f5c542);--sd-line:color-mix(in srgb,var(--sd-muted) 30%,transparent);color:var(--sd-text)}
 .sd *{box-sizing:border-box}
 .sd-day{background:var(--sd-card);border:1px solid var(--sd-line);border-radius:14px;padding:.9rem 1rem;margin:.7rem 0}
@@ -120,7 +130,7 @@ function updatedLabel() {
 .strip .sd-mini{margin:.15rem 0 0 .2rem}
 .more{display:inline-block;margin-top:.7rem;color:var(--link,#7db4ff);font-size:.85rem}
 `;
-  const here = location.pathname.replace(/index\.html$/, '');
+  const here = location.pathname.replace(/index\.html$/, '') || '/';
   function host(html, sticky) {
     const h = document.createElement('div');
     h.className = 'sd-host';
@@ -140,9 +150,10 @@ function updatedLabel() {
       return '<li><span class="sd-mtm">' + rng(mins(c.start), mins(c.end)) + '</span><span class="sd-pill ' + t.cls + '">' + t.short + '</span><span class="sd-nm">' + esc(c.name) + '</span></li>'; }).join('') + '</ul>';
     return h;
   }
-  const nav = host('<div class="nav sd"><div class="wrap"><a class="tab" href="/"' + (here === '/' ? ' aria-current="page"' : '') +
-    '>Morning brief</a><a class="tab" href="/schedule.html">Schedule</a></div></div>', true);
+  const navHTML = tabs => '<div class="nav sd"><div class="wrap">' + tabsHTML(tabs, here, 'tab') + '</div></div>';
+  const nav = host(navHTML(TABS.filter(t => !t.optional)), true);
   document.body.insertBefore(nav, document.body.firstChild);
+  visibleTabs().then(tabs => { nav.shadowRoot.innerHTML = '<style>' + CSS + '</style>' + navHTML(tabs); });
   fetch('/schedule.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject()).then(data => {
     setData(data);
     const today = todayBkk(), tomorrow = addDays(today, 1);
