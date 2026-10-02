@@ -1,6 +1,6 @@
 # Morning handover — Saturday 3 October 2026
 
-Compiled for Suzanne · Asia/Bangkok · local, tech, AI, AI tools & tips, world, Thailand, expat life, food, culture, travel, competitions, Bangkok freebies
+Compiled for Suzanne · Asia/Bangkok · local, tech, AI, AI tools & tips, world, Thailand, expat life, culture, travel, competitions, Bangkok freebies
 
 ## Local
 
@@ -57,14 +57,6 @@ Compiled for Suzanne · Asia/Bangkok · local, tech, AI, AI tools & tips, world,
 - **THAI phones if your flight still looks wrong** — 24-hour airport ticket office; +66 2 356 1111; head office only 08:00–17:00 today and Sunday. The airline said the schedule is back to normal from today; still open your PNR before you leave. [Bangkok Post](https://www.bangkokpost.com/thailand/general/3330160/thai-airways-to-resume-normal-flight-schedules-from-saturday)
 
 - **If you live in Watthana** — You are inside today’s HII heavy-rain district. The wettest modelled hours around Phrom Phong are early afternoon to early evening. Planned MEA/MWA cuts are off; a storm can still knock a local circuit. [The Nation](https://www.nationthailand.com/news/general/40071792)
-
-## Food & drink
-
-- **Chef’s Table at lebua — last night** — “Two Scenes, One Table” is **1–3 Oct only**, so **tonight is the final seating**. Menu ฿13,500++ (10% service and 7% VAT on top); wine pairing ฿9,000++. State Tower, 61st floor. Book: +66 2 624 9555 or dome@lebua.com. [lebua](https://lebua.com/restaurants/chefs-table/two-scenes-one-table/)
-
-- **LUZ Bangkok, 33rd floor, On Nut** — Spanish tapas at INNSiDE by Meliá Sukhumvit. The paid “Feel the Skyline Vibes” stay is a separate product (minimum three nights, ฿2,000 daily food credit only from night three). The free Instagram draw is under Competitions, not a reason to book. [Great Travel](https://greattravelmagazine.com/2026/09/30/feel-the-skyline-vibes-innside-by-melia-bangkok-sukhumvit-marks-third-anniversary/)
-
-- **World Gourmet Festival** — The official site is up for the 26th edition at Anantara Siam. **The page fetched this morning did not state the dates**, so it is not confirmed here that today is still inside the run. [World Gourmet Festival](https://www.worldgourmetfestival.asia/)
 
 ## Culture & local events
 
