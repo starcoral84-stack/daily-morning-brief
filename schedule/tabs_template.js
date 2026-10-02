@@ -31,28 +31,28 @@
     return h;
   }
   function stripDay(ds, rel) {
-    const day = BY[ds], s = summary(day);
+    const day = BY[ds], s = summary(day), ev = eventsFor(ds);
     let h = '<div class="sd-sd">' + chip(ds) + '<span><b>' + rel + '</b> · ' + shortDate(ds) + '</span>';
-    if (!day) h += '<span class="sd-rest-i">not in the schedule yet</span>';
-    else if (!s) h += '<span class="sd-rest-i">Rest day</span>';
-    else h += '<span class="sd-times">⏰ <b>' + f12(s.start) + '</b> start · ' + f12(s.first) + ' first class · ⏰ <b>' + f12(s.fin) + '</b> finish</span>';
+    if (s && s.office) h += '<span class="sd-times">⏰ <b>' + f12(s.start) + '</b> start · Office · ⏰ <b>' + f12(s.fin) + '</b> finish</span>';
+    else if (s) h += '<span class="sd-times">⏰ <b>' + f12(s.start) + '</b> start · ' + f12(s.first) + ' first class · ⏰ <b>' + f12(s.fin) + '</b> finish</span>';
+    else h += '<span class="sd-rest-i">' + (day ? 'Free day' : 'not in the schedule yet') + '</span>';
     h += '</div>';
-    if (s) h += '<ul class="sd-mini">' + day.classes.map(c => { const t = TYPES[c.type] || TYPES.other;
-      return '<li><span class="sd-mtm">' + rng(mins(c.start), mins(c.end)) + '</span><span class="sd-pill ' + t.cls + '">' + t.short + '</span><span class="sd-nm">' + esc(c.name) + '</span></li>'; }).join('') + '</ul>';
+    const items = (s && !s.office ? day.classes.map(miniItem) : []).concat(ev.map(miniEvent));
+    if (items.length) h += '<ul class="sd-mini">' + items.join('') + '</ul>';
     return h;
   }
   const navHTML = tabs => '<div class="nav sd"><div class="wrap">' + tabsHTML(tabs, here, 'tab') + '</div></div>';
   const nav = host(navHTML(TABS.filter(t => !t.optional)), true);
   document.body.insertBefore(nav, document.body.firstChild);
   visibleTabs().then(tabs => { nav.shadowRoot.innerHTML = '<style>' + CSS + '</style>' + navHTML(tabs); });
-  fetch('/schedule.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject()).then(data => {
-    setData(data);
+  Promise.all([fetch('/schedule.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject()), loadEvents()]).then(res => {
+    setData(res[0]);
     const today = todayBkk(), tomorrow = addDays(today, 1);
     let rows = stripDay(today, 'Today') + stripDay(tomorrow, 'Tomorrow');
     if (!summary(BY[tomorrow])) {
       let n = addDays(tomorrow, 1), i = 0;
       while (i < 14 && !summary(BY[n])) { n = addDays(n, 1); i++; }
-      if (summary(BY[n])) rows += stripDay(n, 'Next class day');
+      if (summary(BY[n])) rows += stripDay(n, 'Next work day');
     }
     const strip = host('<div class="strip sd"><div class="wrap">' + rows + '<a class="more" href="/schedule.html">Full schedule →</a></div></div>', false);
     nav.after(strip);

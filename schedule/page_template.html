@@ -59,6 +59,8 @@
     <div><i class="t-home"></i> Student home</div>
     <div><i class="t-onsite"></i> Group on-site</div>
     <div><i class="t-online"></i> Group online</div>
+    <div><i class="t-office"></i> Office day (no classes, Mon–Fri)</div>
+    <div><i class="t-event"></i> Personal event</div>
     <div class="sd-foot">⏰ Start = last class finish − 9 hours</div>
     <a href="/">← Morning brief</a>
   </div>
@@ -85,7 +87,7 @@ function renderNext() {
   if (!summary(BY[tomorrow])) {
     let n = addDays(tomorrow, 1), i = 0;
     while (i < 14 && !summary(BY[n])) { n = addDays(n, 1); i++; }
-    if (summary(BY[n])) h += dayCard(n, 'Next class day', today);
+    if (summary(BY[n])) h += dayCard(n, 'Next work day', today);
   }
   return h;
 }
@@ -121,6 +123,7 @@ function go(v) {
 document.getElementById('upd').textContent = updatedLabel();
 const start = location.hash.replace('#', '');
 go(['next', 'week', 'month'].indexOf(start) >= 0 ? start : 'next');
+loadEvents().then(has => { if (has) go(current); });
 </script>
 </body>
 </html>

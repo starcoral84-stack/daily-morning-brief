@@ -5,7 +5,7 @@ This site is shared by three helpers. Each one only edits its own files.
 | Helper | Owns |
 |---|---|
 | Grok bot (daily brief) | `index.html`, `latest.md`, `llms.txt`, `archive/`, `README.md`, `_headers` |
-| Claude (schedule + tabs) | `schedule.html`, `schedule.json`, `tabs.js`, `schedule/`, `.github/workflows/sync-schedule.yml`, this file |
+| Claude (schedule + tabs) | `schedule.html`, `schedule.json`, `tabs.js`, `schedule/`, `events.json` (personal events), `.github/workflows/sync-schedule.yml`, this file |
 | ChatGPT (Studio) | `studio.html` (and anything it adds for the Studio tab) |
 
 ## Rules
