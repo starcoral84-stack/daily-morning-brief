@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Studio</title>
+<style>
+  :root{
+    color-scheme:light dark;
+    --bg:#0f1115;--card:#181b22;--soft:#20242d;--text:#e8eaef;--muted:#9aa3b2;
+    --accent:#f5c542;--line:color-mix(in srgb,var(--muted) 28%,transparent);
+    --link:#7db4ff;--good:#9bd4ad;--warn:#f1cf74;
+  }
+  @media (prefers-color-scheme:light){
+    :root{--bg:#f6f4ef;--card:#fff;--soft:#f0eee8;--text:#1a1d24;--muted:#667080;
+      --accent:#b8860b;--line:#ddd8cf;--link:#0b57d0;--good:#4b8f61;--warn:#9b7412;}
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+  button,a{font:inherit}
+  button{color:inherit;cursor:pointer}
+  a{color:var(--link)}
+  .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.8rem;padding:.72rem 1rem;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .burger{width:2.75rem;height:2.75rem;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-content:center;gap:.28rem;padding:0}
+  .burger i{display:block;width:1.2rem;height:2px;background:var(--text);border-radius:2px}
+  .title{min-width:0}
+  .title h1{margin:0;font-size:1.05rem}
+  .title small{display:block;color:var(--muted);font-size:.73rem}
+  .scrim{position:fixed;inset:0;z-index:29;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:.2s}
+  .drawer{position:fixed;z-index:30;inset:0 auto 0 0;width:min(18rem,84vw);background:var(--card);border-right:1px solid var(--line);transform:translateX(-102%);transition:transform .22s ease;padding:1rem;display:flex;flex-direction:column;gap:.45rem}
+  body.open .drawer{transform:none}
+  body.open .scrim{opacity:1;pointer-events:auto}
+  .drawer h2{font-size:.76rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:.25rem 0 .45rem}
+  .nav{width:100%;text-align:left;padding:.82rem .9rem;border-radius:12px;border:1px solid transparent;background:transparent}
+  .nav:active,.nav.active{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent)}
+  .drawer-note{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
+  main{max-width:42rem;margin:0 auto;padding:1rem 1rem 4rem}
+  .eyebrow{font-size:.76rem;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:750;margin:.35rem 0}
+  h2{font-size:1.48rem;line-height:1.18;margin:.15rem 0 .35rem}
+  .lede{margin:.1rem 0 1rem;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin:.75rem 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.72rem;min-width:0}
+  .stat span{display:block;font-size:.67rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .stat b{display:block;font-size:1.02rem;margin-top:.14rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem;margin:.8rem 0}
+  .card h3{margin:0 0 .35rem;font-size:1rem}
+  .muted{color:var(--muted)}
+  .energy{display:flex;align-items:flex-start;gap:.8rem}
+  .energy-badge{min-width:4.7rem;text-align:center;border:1px solid var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent);padding:.55rem .6rem;border-radius:12px;font-weight:750}
+  .energy p{margin:.05rem 0}
+  .modes{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem}
+  .mode{min-height:4.35rem;border-radius:14px;border:1px solid var(--line);background:var(--soft);padding:.8rem;text-align:left;font-weight:700}
+  .mode small{display:block;font-weight:400;color:var(--muted);margin-top:.2rem}
+  .mode[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 13%,var(--card))}
+  .suggestion{margin-top:.7rem;padding:.8rem;border-radius:13px;background:color-mix(in srgb,var(--muted) 11%,transparent);min-height:4.2rem}
+  .suggestion strong{display:block;margin-bottom:.2rem}
+  .quick{display:grid;grid-template-columns:1fr;gap:.55rem}
+  .quick button{border:1px solid var(--line);background:var(--soft);border-radius:13px;padding:.85rem;text-align:left}
+  .quick button b{display:block}
+  .quick button span{display:block;color:var(--muted);font-size:.84rem;margin-top:.15rem}
+  .gap-list{list-style:none;padding:0;margin:.6rem 0 0}
+  .gap-list li{padding:.52rem 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem}
+  .gap-list li span:last-child{color:var(--muted);white-space:nowrap}
+  .privacy{font-size:.86rem;color:var(--muted)}
+  .privacy b{color:var(--text)}
+  .toast{position:fixed;left:50%;bottom:1rem;transform:translate(-50%,1rem);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:.65rem .85rem;border-radius:999px;font-size:.82rem;transition:.2s;z-index:50}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  @media(max-width:30rem){.grid{grid-template-columns:1fr 1fr}.grid .stat:last-child{grid-column:1/-1}.modes{grid-template-columns:1fr}}
+</style>
+<script src="/tabs.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <button class="burger" id="burger" aria-label="Open Studio menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
+  <div class="title"><h1>Studio</h1><small>Private ideas stay in ChatGPT. This page stays generic.</small></div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Studio menu">
+  <h2>Studio</h2>
+  <button class="nav" data-go="today">Today</button>
+  <button class="nav" data-go="modes">Work modes</button>
+  <button class="nav" data-go="quick">Quick launch</button>
+  <button class="nav" data-go="privacy">Privacy</button>
+  <div class="drawer-note">Nothing here stores project names, private notes or student information.</div>
+</aside>
+
+<main>
+  <section id="today">
+    <p class="eyebrow">Today's focus</p>
+    <h2 id="dayTitle">Loading today…</h2>
+    <p class="lede" id="dayLead">Reading the public schedule only.</p>
+
+    <div class="grid">
+      <div class="stat"><span>Teaching</span><b id="teachHours">—</b></div>
+      <div class="stat"><span>Day start</span><b id="dayStart">—</b></div>
+      <div class="stat"><span>Finish</span><b id="dayFinish">—</b></div>
+    </div>
+
+    <div class="card">
+      <div class="energy">
+        <div class="energy-badge" id="energyBadge">—</div>
+        <div>
+          <h3>Energy mode</h3>
+          <p id="energyText" class="muted">Based only on today's teaching hours.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="gapCard">
+      <h3>Useful windows</h3>
+      <p class="muted" id="gapIntro">Looking for gaps in the day.</p>
+      <ul class="gap-list" id="gapList"></ul>
+    </div>
+  </section>
+
+  <section id="modes">
+    <p class="eyebrow">Choose a mode</p>
+    <h2>What kind of work fits now?</h2>
+    <p class="lede">Generic on purpose. The actual project stays between you and ChatGPT.</p>
+
+    <div class="modes" id="modeButtons">
+      <button class="mode" data-mode="create" aria-pressed="false">Create<small>Make something new.</small></button>
+      <button class="mode" data-mode="plan" aria-pressed="false">Plan<small>Turn a fuzzy idea into next steps.</small></button>
+      <button class="mode" data-mode="write" aria-pressed="false">Write<small>Draft, edit or shape a piece.</small></button>
+      <button class="mode" data-mode="admin" aria-pressed="false">Admin<small>Clear small practical jobs.</small></button>
+      <button class="mode" data-mode="reset" aria-pressed="false">Reset<small>Rest, tidy up or stop pushing.</small></button>
+    </div>
+    <div class="suggestion" id="modeSuggestion">
+      <strong>Pick one.</strong>
+      You do not need to publish the project name here.
+    </div>
+  </section>
+
+  <section id="quick">
+    <p class="eyebrow">Quick launch</p>
+    <h2>Small decisions, quickly</h2>
+    <p class="lede">Tap for a neutral prompt you can use in ChatGPT.</p>
+    <div class="quick">
+      <button data-prompt="Help me choose the single most useful thing to do today. Keep it practical and ask at most one question."><b>Choose one thing</b><span>Cut through too many options.</span></button>
+      <button data-prompt="Give me one useful task I can finish in 30 minutes. Keep it generic until I tell you the project."><b>30-minute task</b><span>Good for a small window.</span></button>
+      <button data-prompt="I have a deep-work window. Help me turn one project into a focused work session with a clear finish line."><b>Deep work</b><span>Use a bigger block well.</span></button>
+      <button data-prompt="I am low-energy. Give me three useful but easy options, with no guilt if I choose rest."><b>Low-energy mode</b><span>Useful without forcing it.</span></button>
+    </div>
+  </section>
+
+  <section id="privacy" class="card">
+    <h3>Privacy boundary</h3>
+    <p class="privacy"><b>This page is public.</b> It deliberately contains no private project names, student details, personal notes or draft material. The page reads only aggregate timing from the public schedule. Anything sensitive belongs in the private ChatGPT conversation, not in this repository.</p>
+  </section>
+</main>
+
+<div class="toast" id="toast">Prompt copied</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const mins = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+  const f12 = n => {
+    n = ((n % 1440) + 1440) % 1440;
+    let h = Math.floor(n/60), m = n%60, ap = h >= 12 ? 'PM' : 'AM';
+    h = h%12 || 12;
+    return h + ':' + String(m).padStart(2,'0') + ' ' + ap;
+  };
+  const todayBkk = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok'}).format(new Date());
+  const pretty = ds => new Intl.DateTimeFormat('en-GB',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long'})
+    .format(new Date(ds+'T00:00:00Z'));
+  const hoursLabel = h => Number.isInteger(h) ? h + ' h' : h.toFixed(1) + ' h';
+
+  function setOpen(on){
+    document.body.classList.toggle('open',on);
+    $('#burger').setAttribute('aria-expanded',on?'true':'false');
+  }
+  $('#burger').addEventListener('click',()=>setOpen(!document.body.classList.contains('open')));
+  $('#scrim').addEventListener('click',()=>setOpen(false));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') setOpen(false); });
+  $$('.nav').forEach(b=>b.addEventListener('click',()=>{
+    document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth',block:'start'});
+    setOpen(false);
+  }));
+
+  function gapsFor(classes){
+    if(classes.length < 2) return [];
+    const ordered = [...classes].sort((a,b)=>a.start.localeCompare(b.start));
+    const out = [];
+    for(let i=0;i<ordered.length-1;i++){
+      const a = mins(ordered[i].end), b = mins(ordered[i+1].start);
+      if(b-a >= 45) out.push({start:a,end:b,dur:b-a});
+    }
+    return out;
+  }
+
+  function renderDay(data){
+    const ds = todayBkk();
+    const day = (data.days||[]).find(d=>d.date===ds);
+    const classes = day?.classes || [];
+    $('#dayTitle').textContent = pretty(ds);
+
+    if(!day){
+      $('#dayLead').textContent = 'Today is not in the current schedule file.';
+      $('#teachHours').textContent = '—';
+      $('#dayStart').textContent = '—';
+      $('#dayFinish').textContent = '—';
+      $('#energyBadge').textContent = 'Open';
+      $('#energyText').textContent = 'No schedule data for today, so keep the day flexible.';
+      $('#gapIntro').textContent = 'No timing data available.';
+      return;
+    }
+
+    if(!classes.length){
+      $('#dayLead').textContent = 'No classes today. The day is open.';
+      $('#teachHours').textContent = '0 h';
+      $('#dayStart').textContent = 'Open';
+      $('#dayFinish').textContent = 'Open';
+      $('#energyBadge').textContent = 'Light';
+      $('#energyText').textContent = 'A good day for one meaningful block, with plenty of room around it.';
+      $('#gapIntro').textContent = 'No fixed class gaps — choose your own focus window.';
+      $('#gapList').innerHTML = '<li><span>Suggested focus</span><span>60–120 min</span></li><li><span>Optional small task</span><span>20–30 min</span></li>';
+      return;
+    }
+
+    const ordered = [...classes].sort((a,b)=>a.start.localeCompare(b.start));
+    const total = ordered.reduce((s,c)=>s + mins(c.end)-mins(c.start),0)/60;
+    const first = mins(ordered[0].start);
+    const finish = Math.max(...ordered.map(c=>mins(c.end)));
+    const start = finish - 9*60;
+
+    $('#dayLead').textContent = classes.length + (classes.length===1?' class':' classes') + ' on the public schedule.';
+    $('#teachHours').textContent = hoursLabel(total);
+    $('#dayStart').textContent = f12(start);
+    $('#dayFinish').textContent = f12(finish);
+
+    let mode, text;
+    if(total <= 2){
+      mode='Light';
+      text='Keep one main creative or planning block, then leave breathing room.';
+    }else if(total <= 3.5){
+      mode='Normal';
+      text='One focused task fits well. Avoid turning every gap into work.';
+    }else{
+      mode='Heavy';
+      text='Teaching already carries the day. Keep extra work short, clear and optional.';
+    }
+    $('#energyBadge').textContent = mode;
+    $('#energyText').textContent = text;
+
+    const gaps = gapsFor(ordered);
+    if(!gaps.length){
+      $('#gapIntro').textContent = 'No long class-to-class gap today.';
+      $('#gapList').innerHTML = '<li><span>Best approach</span><span>One compact task</span></li>';
+    }else{
+      $('#gapIntro').textContent = 'Only gaps of 45 minutes or more are shown.';
+      $('#gapList').innerHTML = gaps.map(g=>{
+        const dur = g.dur >= 60 ? (Math.floor(g.dur/60)+' h'+(g.dur%60?' '+g.dur%60+' min':'')) : g.dur+' min';
+        return '<li><span>'+f12(g.start)+' – '+f12(g.end)+'</span><span>'+dur+'</span></li>';
+      }).join('');
+    }
+  }
+
+  const suggestions = {
+    create:{
+      Light:'Give the best idea a proper 60–90 minute build.',
+      Normal:'Make one concrete piece, then stop.',
+      Heavy:'Capture the idea or make a tiny first version only.'
+    },
+    plan:{
+      Light:'Use the open space to turn one vague project into a short sequence of next steps.',
+      Normal:'Decide the next action, not the whole future.',
+      Heavy:'Write down one next step so tomorrow-you does not have to rediscover it.'
+    },
+    write:{
+      Light:'Draft freely first; edit later.',
+      Normal:'Choose one section or one page and finish that.',
+      Heavy:'Write notes, fragments or a rough paragraph. Enough is enough.'
+    },
+    admin:{
+      Light:'Batch the annoying little jobs and clear them in one sweep.',
+      Normal:'Pick the three smallest useful jobs.',
+      Heavy:'Do only what genuinely reduces tomorrow\'s friction.'
+    },
+    reset:{
+      Light:'A free day does not have to become a productivity contest.',
+      Normal:'Protect at least one gap from becoming another task.',
+      Heavy:'Recovery is the useful task.'
+    }
+  };
+  let currentEnergy = 'Light';
+  const observer = new MutationObserver(()=>{ currentEnergy = $('#energyBadge').textContent || 'Light'; });
+  observer.observe($('#energyBadge'),{childList:true});
+
+  $$('.mode').forEach(btn=>btn.addEventListener('click',()=>{
+    $$('.mode').forEach(b=>b.setAttribute('aria-pressed','false'));
+    btn.setAttribute('aria-pressed','true');
+    const label = btn.childNodes[0].textContent.trim();
+    const map = suggestions[btn.dataset.mode];
+    $('#modeSuggestion').innerHTML = '<strong>'+label+'</strong>' + (map[currentEnergy] || map.Normal);
+    try{ localStorage.setItem('studio-mode',btn.dataset.mode); }catch(e){}
+  }));
+
+  try{
+    const saved = localStorage.getItem('studio-mode');
+    if(saved) document.querySelector('.mode[data-mode="'+saved+'"]')?.click();
+  }catch(e){}
+
+  function toast(msg){
+    $('#toast').textContent = msg;
+    $('#toast').classList.add('show');
+    setTimeout(()=>$('#toast').classList.remove('show'),1400);
+  }
+  $$('.quick button').forEach(btn=>btn.addEventListener('click',async()=>{
+    const p = btn.dataset.prompt;
+    try{
+      await navigator.clipboard.writeText(p);
+      toast('Prompt copied');
+    }catch(e){
+      prompt('Copy this prompt:',p);
+    }
+  }));
+
+  fetch('/schedule.json',{cache:'no-store'})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(renderDay)
+    .catch(()=>{
+      $('#dayTitle').textContent = 'Studio is ready';
+      $('#dayLead').textContent = 'The schedule could not be loaded just now.';
+      $('#energyBadge').textContent = 'Open';
+      $('#energyText').textContent = 'Use the work modes below without schedule guidance.';
+      $('#gapIntro').textContent = 'Schedule unavailable.';
+    });
+})();
+</script>
+</body>
+</html>
