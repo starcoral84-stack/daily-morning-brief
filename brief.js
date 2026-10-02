@@ -14,7 +14,9 @@
     var main = document.querySelector('main') || art.parentNode;
     var PK = 'bf-prefs-v1';
     var prefs = { hidden: {}, collapsed: {} };
-    try { var raw = localStorage.getItem(PK); if (raw) prefs = Object.assign(prefs, JSON.parse(raw)); } catch (e) {}
+    var raw = null;
+    try { raw = localStorage.getItem(PK); if (raw) prefs = Object.assign(prefs, JSON.parse(raw)); } catch (e) {}
+    if (!raw) prefs.hidden.strip = 1; /* schedule has its own tab: strip off by default */
     function save() { try { localStorage.setItem(PK, JSON.stringify(prefs)); } catch (e) {} }
 
     var $ = function (t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
@@ -151,11 +153,39 @@
     hero.appendChild($('p', 'bf-sub', sections.length + ' sections · ' + count + ' items · tap ☰ to pick what you see'));
     app.appendChild(hero);
 
+    /* live Bangkok (Phrom Phong) rain + air quality, used when the brief has no such widget */
+    var have = {}; widgets.forEach(function (w) { have[w.kind] = 1; });
+    var live = [];
+    if (!have.rain) live.push({ kind: 'rain', label: 'Rain today', id: 'w-rain', html: '', plain: '' });
+    if (!have.aqi) live.push({ kind: 'aqi', label: 'AQI Phrom Phong', id: 'w-aqi', html: '', plain: '' });
     var wrap = null;
-    if (widgets.length) {
+    if (widgets.length || live.length) {
       wrap = $('section', 'bf-widgets'); wrap.setAttribute('aria-label', 'Local');
-      widgets.forEach(function (w) { wrap.appendChild(renderWidget(w)); });
+      live.forEach(function (w) {
+        var d = $('div', 'bf-w bf-w-' + w.kind, '<div class="bf-wh"><span class="bf-wi">' + (w.kind === 'rain' ? '🌧️' : '🌫️') + '</span>' + esc(w.label) + '</div><div class="bf-wt">Loading…</div>');
+        d.id = w.id; d.setAttribute('data-bf', w.id); wrap.appendChild(d); w.el = d;
+        widgets.push(w);
+      });
+      widgets.forEach(function (w) { if (!w.el) wrap.appendChild(renderWidget(w)); });
       app.appendChild(wrap);
+      var fail = function (w) { if (w.el && w.el.parentNode) { w.el.parentNode.removeChild(w.el); } };
+      var swap = function (w, html) { var n = renderWidget({ kind: w.kind, label: w.label, id: w.id, html: html, plain: html.replace(/<[^>]*>/g, '') }); w.el.className = n.className; w.el.innerHTML = n.innerHTML; };
+      var R = live.filter(function (w) { return w.kind === 'rain'; })[0], A = live.filter(function (w) { return w.kind === 'aqi'; })[0];
+      var LL = 'latitude=13.7300&longitude=100.5700&timezone=Asia%2FBangkok';
+      if (R) fetch('https://api.open-meteo.com/v1/forecast?' + LL + '&current=temperature_2m&hourly=precipitation_probability&forecast_days=1')
+        .then(function (r) { return r.json(); }).then(function (j) {
+          var p = j.hourly.precipitation_probability, t = j.hourly.time, mx = 0, wet = [];
+          p.forEach(function (v, i) { if (v > mx) mx = v; var h = +t[i].slice(11, 13); if (v >= 50 && h >= 6 && h <= 22) wet.push(h); });
+          var f = function (h) { return (h % 12 || 12) + (h < 12 ? ' am' : ' pm'); };
+          var note = wet.length ? 'Likely wet ' + f(wet[0]) + '–' + f(wet[wet.length - 1] + 1) : 'No rain likely today';
+          var temp = j.current && j.current.temperature_2m != null ? ' · ' + Math.round(j.current.temperature_2m) + '°C now' : '';
+          swap(R, mx + '% peak chance. ' + note + temp);
+        }).catch(function () { fail(R); apply(); });
+      if (A) fetch('https://air-quality-api.open-meteo.com/v1/air-quality?' + LL + '&current=us_aqi,pm2_5')
+        .then(function (r) { return r.json(); }).then(function (j) {
+          var v = Math.round(j.current.us_aqi), pm = Math.round(j.current.pm2_5);
+          swap(A, v + ' PM2.5 ' + pm + ' µg/m³ (US AQI)');
+        }).catch(function () { fail(A); apply(); });
     }
     var list = $('div', 'bf-list'); cards.forEach(function (c) { list.appendChild(c); }); app.appendChild(list);
     var fo = $('footer', 'bf-foot');
