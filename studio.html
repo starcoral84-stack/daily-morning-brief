@@ -4,265 +4,149 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Studio</title>
+<title>Studio — ChatGPT cut</title>
 <style>
-:root{color-scheme:light dark;--bg:#0e1015;--card:#181b22;--soft:#222731;--text:#eceef3;--muted:#9ca5b5;--accent:#f1c75b;--accent2:#b8a7ff;--line:color-mix(in srgb,var(--muted) 26%,transparent);--link:#83b8ff}
-@media(prefers-color-scheme:light){:root{--bg:#f7f4ee;--card:#fff;--soft:#f0ece5;--text:#1b1f27;--muted:#667080;--accent:#a87800;--accent2:#705bd0;--line:#ded8ce;--link:#0b57d0}}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
-button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}a{color:var(--link)}
+:root{color-scheme:light dark;--bg:#0e1015;--card:#181b22;--soft:#222731;--text:#edf0f5;--muted:#9da6b5;--accent:#f3c85b;--line:color-mix(in srgb,var(--muted) 26%,transparent);--link:#83b8ff;--hot:#ff8d70;--odd:#b9a7ff}
+@media(prefers-color-scheme:light){:root{--bg:#f7f4ee;--card:#fff;--soft:#f1eee8;--text:#1b1f27;--muted:#687180;--accent:#a87800;--line:#ded8ce;--link:#0b57d0;--hot:#b94d31;--odd:#6b58c4}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.55}
+a{color:var(--link)}button{font:inherit;color:inherit;cursor:pointer}
 .top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:.8rem;padding:.72rem 1rem;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .burger{width:2.75rem;height:2.75rem;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-content:center;gap:.28rem;padding:0}
 .burger i{width:1.2rem;height:2px;background:var(--text);display:block;border-radius:2px}.top h1{margin:0;font-size:1.05rem}.top small{display:block;color:var(--muted);font-size:.73rem}
-.scrim{position:fixed;inset:0;z-index:29;background:rgba(0,0,0,.52);opacity:0;pointer-events:none;transition:.2s}.drawer{position:fixed;z-index:30;inset:0 auto 0 0;width:min(18rem,84vw);background:var(--card);border-right:1px solid var(--line);transform:translateX(-102%);transition:.22s;padding:1rem;display:flex;flex-direction:column;gap:.42rem;overflow:auto}
-body.open .drawer{transform:none}body.open .scrim{opacity:1;pointer-events:auto}.drawer h2{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:.2rem 0 .45rem}
-.nav{width:100%;text-align:left;padding:.8rem .9rem;border-radius:12px;border:1px solid transparent;background:transparent}.nav:active{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent)}
+.scrim{position:fixed;inset:0;z-index:29;background:rgba(0,0,0,.52);opacity:0;pointer-events:none;transition:.2s}.drawer{position:fixed;z-index:30;inset:0 auto 0 0;width:min(19rem,84vw);background:var(--card);border-right:1px solid var(--line);transform:translateX(-102%);transition:.22s;padding:1rem;display:flex;flex-direction:column;gap:.42rem;overflow:auto}
+body.open .drawer{transform:none}body.open .scrim{opacity:1;pointer-events:auto}.drawer h2{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:.2rem 0 .45rem}.nav{width:100%;text-align:left;padding:.8rem .9rem;border-radius:12px;border:1px solid transparent;background:transparent}.nav:active{background:color-mix(in srgb,var(--accent) 15%,transparent);border-color:var(--accent)}
 .drawer-note{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--muted)}
-main{max-width:44rem;margin:0 auto;padding:1rem 1rem 4rem}.hero{padding:.7rem 0 1rem}.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:800;margin:.2rem 0}.hero h2{font-size:1.7rem;line-height:1.1;margin:.12rem 0 .35rem}.hero p{margin:.2rem 0;color:var(--muted)}
-.surprise{width:100%;border:1px solid var(--accent);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 17%,var(--card)),color-mix(in srgb,var(--accent2) 12%,var(--card)));border-radius:16px;padding:1rem;text-align:left;font-weight:800;font-size:1.05rem;margin:.35rem 0 1rem}.surprise small{display:block;color:var(--muted);font-weight:400;font-size:.82rem;margin-top:.15rem}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}.tile{min-height:7rem;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:.9rem;text-align:left;display:flex;flex-direction:column;justify-content:space-between}.tile b{font-size:1rem}.tile span{font-size:1.45rem}.tile small{display:block;color:var(--muted);font-weight:400;margin-top:.2rem}
-.panel{display:none;margin-top:1rem}.panel.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem;margin:.75rem 0}.card h3{margin:0 0 .35rem;font-size:1rem}.card p{margin:.35rem 0}.bigtext{font-size:1.08rem;line-height:1.5}.muted{color:var(--muted)}
-.actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.8rem}.actions button,.copy{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:.7rem .85rem}.actions .primary{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--card))}
-label{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:750;margin:.7rem 0 .3rem}
-textarea,input,select{width:100%;border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:.8rem;outline:none}textarea{min-height:7rem;resize:vertical}
-.result{margin-top:.75rem;padding:.9rem;border-radius:13px;background:color-mix(in srgb,var(--muted) 10%,transparent);border:1px solid var(--line)}.result ul{margin:.45rem 0 .1rem;padding-left:1.15rem}.result li{margin:.35rem 0}
-.chips{display:flex;flex-wrap:wrap;gap:.45rem}.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.48rem .7rem}.chip.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,var(--card))}
-.note{font-size:.82rem;color:var(--muted);margin-top:.65rem}.music{display:flex;align-items:flex-start;gap:.75rem}.music .noteicon{font-size:1.5rem}
-.halloween{border-color:color-mix(in srgb,#ff8c42 55%,var(--line));background:linear-gradient(180deg,color-mix(in srgb,#ff8c42 7%,var(--card)),var(--card))}
-.tarot-card{font-family:Georgia,serif;font-size:1.2rem}.duel{display:grid;grid-template-columns:1fr;gap:.6rem}.duel-card{border:1px solid var(--line);border-radius:14px;padding:.8rem;background:var(--soft)}.duel-card h4{margin:0 0 .35rem}
-.toast{position:fixed;left:50%;bottom:1rem;transform:translate(-50%,1rem);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:.65rem .9rem;border-radius:999px;font-size:.82rem;transition:.2s;z-index:50}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:29rem){.grid{grid-template-columns:1fr}.hero h2{font-size:1.5rem}}
+main{max-width:44rem;margin:0 auto;padding:1rem 1rem 4rem}.kicker{font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:800;margin:.4rem 0}.hero h2{font-size:1.75rem;line-height:1.1;margin:.1rem 0 .45rem}.hero p{color:var(--muted);margin:.2rem 0 1rem}.stamp{display:inline-block;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.3rem .65rem;color:var(--muted);font-size:.78rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1rem 1rem 1.05rem;margin:.9rem 0}.card.hot{border-color:color-mix(in srgb,var(--hot) 50%,var(--line))}.card.odd{border-color:color-mix(in srgb,var(--odd) 45%,var(--line))}
+.label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-weight:850;color:var(--accent);margin-bottom:.35rem}.hot .label{color:var(--hot)}.odd .label{color:var(--odd)}
+.card h3{font-size:1.16rem;line-height:1.25;margin:.15rem 0 .45rem}.card p{margin:.5rem 0}.aside{color:var(--muted);font-size:.92rem}.quote{padding:.75rem .85rem;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--muted) 8%,transparent);border-radius:0 12px 12px 0;margin:.7rem 0}
+.links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.75rem}.links a{display:inline-block;text-decoration:none;border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:.45rem .65rem;font-size:.82rem}
+.mischief{font-size:1.04rem;line-height:1.5}.watch{display:flex;gap:.7rem;align-items:flex-start}.dot{width:.72rem;height:.72rem;border-radius:50%;background:var(--hot);margin-top:.45rem;flex:none}
+footer{color:var(--muted);font-size:.82rem;margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--line)}
+@media(max-width:30rem){.hero h2{font-size:1.5rem}.card{padding:.9rem}}
 </style>
 <script src="/tabs.js" defer></script>
 </head>
 <body>
 <header class="top">
 <button class="burger" id="burger" aria-label="Open Studio menu" aria-controls="drawer" aria-expanded="false"><i></i><i></i><i></i></button>
-<div><h1>Studio</h1><small>Curiosity, comedy, writing and useful weirdness</small></div>
+<div><h1>Studio</h1><small>ChatGPT's cut of the morning brief</small></div>
 </header>
 <div class="scrim" id="scrim"></div>
-<aside class="drawer" id="drawer" aria-label="Studio menu">
-<h2>Explore</h2>
-<button class="nav" data-open="rabbit">Rabbit Hole</button>
-<button class="nav" data-open="weird">Explain Something Weird</button>
-<button class="nav" data-open="til">TIL</button>
-<button class="nav" data-open="dyk">DYK?</button>
-<button class="nav" data-open="halloween">Halloween Weirdness</button>
-<button class="nav" data-open="tarot">Tarot Lab</button>
-<button class="nav" data-open="anti">Anti-AI Lab</button>
-<button class="nav" data-open="punch">Punchline Lab</button>
-<button class="nav" data-open="innuendo">Innuendo Engine</button>
-<button class="nav" data-open="duel">Model Duel</button>
-<div class="drawer-note">Public page. Anything private stays in ChatGPT. Text you type into the tools below is processed only in your browser.</div>
+<aside class="drawer" id="drawer">
+<h2>Today's cut</h2>
+<button class="nav" data-go="big">🔥 The big one</button>
+<button class="nav" data-go="rabbit">🕳️ Rabbit hole</button>
+<button class="nav" data-go="important">🧠 Wait, that's important</button>
+<button class="nav" data-go="useful">🤖 Actually useful AI</button>
+<button class="nav" data-go="connection">🔗 Weird connection</button>
+<button class="nav" data-go="mischief">😈 Mischief mode</button>
+<button class="nav" data-go="watch">👀 Watch this</button>
+<button class="nav" data-go="october">🎃 October weirdness</button>
+<div class="drawer-note">Built only from public news and public links. Private projects stay out of the repo.</div>
 </aside>
 
 <main>
-<section class="hero" id="home">
-<p class="eyebrow">Studio</p>
-<h2>Tap something. Find something odd.</h2>
-<p>No productivity dashboard. No private project names. Just things worth opening.</p>
+<section class="hero">
+<p class="kicker">Friday 2 October 2026</p>
+<h2>The interesting bits after Grok has done the filing.</h2>
+<p>Less “here are 47 things that happened”, more “oi, this bit matters — and this one gets weird.”</p>
+<span class="stamp">Mischief mode: on</span>
 </section>
 
-<button class="surprise" id="surprise">🎲 Surprise me<small>Pick something from the whole Studio.</small></button>
-
-<section class="grid" aria-label="Studio tools">
-<button class="tile" data-open="rabbit"><span>🕳️</span><div><b>Rabbit Hole</b><small>A topic worth losing ten minutes to.</small></div></button>
-<button class="tile" data-open="weird"><span>🧠</span><div><b>Explain Something Weird</b><small>Strange minds, sounds, systems and phenomena.</small></div></button>
-<button class="tile" data-open="til"><span>💡</span><div><b>TIL</b><small>One genuinely interesting fact.</small></div></button>
-<button class="tile" data-open="dyk"><span>🎃</span><div><b>DYK?</b><small>Fast facts, often with a Halloween music pick.</small></div></button>
-<button class="tile" data-open="halloween"><span>🦇</span><div><b>Halloween Weirdness</b><small>Folklore, horror, sound and unsettling history.</small></div></button>
-<button class="tile" data-open="tarot"><span>🔮</span><div><b>Tarot Lab</b><small>Cards as symbols, combinations and archetypes.</small></div></button>
-<button class="tile" data-open="anti"><span>✂️</span><div><b>Anti-AI Lab</b><small>Catch robotic writing habits.</small></div></button>
-<button class="tile" data-open="punch"><span>🥁</span><div><b>Punchline Lab</b><small>Misdirection, escalation and callbacks.</small></div></button>
-<button class="tile" data-open="innuendo"><span>😏</span><div><b>Innuendo Engine</b><small>Make an innocent object suspicious.</small></div></button>
-<button class="tile" data-open="duel"><span>⚔️</span><div><b>Model Duel</b><small>Same task, differently tuned prompts.</small></div></button>
+<section class="card hot" id="big">
+<div class="label">🔥 The big one</div>
+<h3>Persistent AI agents are becoming a normal product, not a lab trick.</h3>
+<p>OpenAI's new Dots matter because they change the basic shape of using AI. Instead of <em>ask → answer → goodbye</em>, the model can hold a role, keep context and continue working between conversations.</p>
+<p>That puts OpenAI much closer to the territory occupied by agent frameworks such as OpenClaw and xAI's Grok Bot: the interesting competition is becoming <strong>who gets to be the persistent layer between you and the rest of your digital life</strong>.</p>
+<div class="quote">The chatbot is slowly turning into a colleague who never goes home. HR has not been consulted.</div>
+<div class="links">
+<a href="https://www.medianama.com/2026/10/223-openai-launches-dots-devday-2026/">DevDay report</a>
+<a href="https://www.business-standard.com/technology/tech-news/openai-devday-2026-dots-gpt-6-1-sol-codex-developer-tools-126093000396_1.html">Business Standard</a>
+</div>
 </section>
 
-<section class="panel" id="rabbit">
-<div class="card"><h3>🕳️ Rabbit Hole</h3><p class="bigtext" id="rabbitText"></p><p class="muted" id="rabbitWhy"></p><div class="actions"><button class="primary" data-random="rabbit">Another rabbit hole</button></div></div>
+<section class="card odd" id="rabbit">
+<div class="label">🕳️ Rabbit hole</div>
+<h3>The AI rivals are quietly renting each other's furnaces.</h3>
+<p>Grok's brief says xAI is leasing huge chunks of its Colossus GPU infrastructure to Anthropic and Google. That is deliciously strange because the public story is “AI labs are at war”, while the physical layer looks much more like a brutal industrial utility market.</p>
+<p>Underneath models, personalities and launch events are the same hard constraints: chips, electricity, cooling, buildings, network capacity and gigantic capital bills. The glamorous bit is the model. The bottleneck may increasingly be <strong>who can secure enough physical computation at the right price</strong>.</p>
+<p class="aside">Rabbit-hole questions: When does compute become a commodity? Does model advantage matter less if rivals can rent the same class of infrastructure? And at what point do AI companies start looking suspiciously like power companies with chat interfaces?</p>
+<div class="quote">“Our model will crush yours.”<br>“Lovely. Your GPU rental invoice is due Tuesday.”</div>
+<div class="links">
+<a href="https://cryptobriefing.com/xai-leases-compute-anthropic-google/">Colossus leasing report</a>
+<a href="https://www.webpronews.com/musks-colossus-races-past-a-gigawatt-as-xai-pours-billions-into-memphis-ai-compute/">Colossus infrastructure</a>
+</div>
 </section>
 
-<section class="panel" id="weird">
-<div class="card"><h3>🧠 Explain Something Weird</h3><p class="bigtext" id="weirdTitle"></p><p id="weirdBody"></p><div class="actions"><button class="primary" data-random="weird">Something else weird</button></div></div>
+<section class="card" id="important">
+<div class="label">🧠 Wait, that's important</div>
+<h3>Voice is quietly becoming one of the most consequential AI interfaces.</h3>
+<p>Microsoft's new streaming transcription and voice stack is less headline-friendly than a frontier model launch, but cheap multilingual live speech matters enormously. Once speech recognition, reasoning and natural voice response become fast and cheap enough, AI stops feeling like “typing to software”.</p>
+<p>For language learning especially, the obvious direction is live conversational systems that can hear hesitation, respond immediately, switch languages when useful and keep the interaction flowing without forcing everything through a text box.</p>
+<div class="quote">The flashy AI demo is a benchmark. The dangerous one is the tutor that can hear you say the wrong preposition before you've even finished the sentence.</div>
+<div class="links"><a href="https://www.unite.ai/microsoft-launches-mai-transcribe-2-streaming-and-two-mai-voice-models/">Microsoft speech stack</a></div>
 </section>
 
-<section class="panel" id="til">
-<div class="card"><h3>💡 Today I Learned</h3><p class="bigtext" id="tilFact"></p><p class="muted" id="tilMore"></p><div class="actions"><button class="primary" data-random="til">Another TIL</button></div></div>
+<section class="card" id="useful">
+<div class="label">🤖 Actually useful AI</div>
+<h3>One experiment worth doing: compare “agent” products by what they can continue without you.</h3>
+<p>Ignore model IQ for an afternoon. Pick one recurring job and compare Dots, Grok Bot and OpenClaw on four boring-but-important things: memory, scheduling, tool access and how gracefully they recover when something changes.</p>
+<p>The winner is not necessarily the one that writes the prettiest paragraph. It is the one that can still do the job on Thursday after you stopped babysitting it on Monday.</p>
+<div class="quote">Agent benchmark: “Did it keep going?”<br>AI industry benchmark: seventeen graphs and a man saying “frontier”.</div>
 </section>
 
-<section class="panel" id="dyk">
-<div class="card halloween"><h3>🎃 Did you know?</h3><p class="bigtext" id="dykFact"></p><div class="music"><div class="noteicon">🎵</div><div><b id="musicTitle"></b><p class="muted" id="musicWhy"></p></div></div><div class="actions"><button class="primary" data-random="dyk">Another one</button></div></div>
+<section class="card odd" id="connection">
+<div class="label">🔗 Weird connection</div>
+<h3>Persistent agents + live voice + social platforms = AI characters with continuity.</h3>
+<p>Today's brief contains three pieces that look separate: persistent cloud agents, increasingly natural streaming voice, and Grok's tighter integration with X. Put them together and you get something more interesting than another assistant: <strong>software characters that maintain an ongoing existence</strong>.</p>
+<p>They can notice things, remember their own history, speak, publish and return later with continuity. That's a very different medium from a chatbot session.</p>
+<p class="aside">The difficult bit will not be making them talk. It will be making them remain interesting after the 600th interaction without becoming a motivational LinkedIn post wearing lipstick.</p>
 </section>
 
-<section class="panel" id="halloween">
-<div class="card halloween"><h3>🦇 Halloween Weirdness</h3><p class="bigtext" id="hallTitle"></p><p id="hallBody"></p><p class="note" id="hallNote"></p><div class="actions"><button class="primary" data-random="halloween">More weirdness</button></div></div>
+<section class="card hot" id="mischief">
+<div class="label">😈 Mischief mode</div>
+<h3>Today's technological theatre</h3>
+<p class="mischief">Google: “We have made Gemini 4 Argon.”</p>
+<p class="mischief">Public: “Can we use it?”</p>
+<p class="mischief">Google: “No.”</p>
+<p class="mischief">Public: “Can <em>anyone</em> use it?”</p>
+<p class="mischief">Google: “Cybersecurity people with laminated badges may approach it slowly.”</p>
+<p class="aside">The serious bit: restricting access to unusually capable models for safety evaluation is rational. The funny bit is that frontier AI launches are beginning to resemble zoo feeding procedures.</p>
+<div class="links">
+<a href="https://www.theguardian.com/technology/2026/oct/01/google-releases-gemini-model-restrictions">Guardian</a>
+<a href="https://blog.google/intl/en-mena/company-news/technology/gemini-4-argon-our-next-era-of-frontier-intelligence/">Google</a>
+</div>
 </section>
 
-<section class="panel" id="tarot">
-<div class="card"><h3>🔮 Tarot Lab</h3><p class="tarot-card" id="tarotPair"></p><p id="tarotBody"></p><div class="actions"><button class="primary" data-random="tarot">New pairing</button></div><p class="note">Symbolic exploration only — no private readings are stored here.</p></div>
+<section class="card" id="watch">
+<div class="label">👀 Watch this</div>
+<div class="watch"><div class="dot"></div><div><h3>Grok + X pricing could reveal what people will actually pay for an agent.</h3><p>Reports say xAI is considering new unified pricing, including an expensive tier with Grok Bot access. The interesting part is not the exact rumoured price; it is whether persistent agent capability becomes a premium product category in its own right.</p></div></div>
+<div class="links"><a href="https://www.thestar.com.my/tech/tech-news/2026/10/01/musks-spacexai-considers-overhaul-of-pricing-for-grok-x-users">Bloomberg-sourced report</a></div>
 </section>
 
-<section class="panel" id="anti">
-<div class="card"><h3>✂️ Anti-AI Lab</h3><label for="antiInput">Paste some writing</label><textarea id="antiInput" placeholder="Nothing is uploaded. This is checked locally in your browser."></textarea><div class="chips"><button class="chip" data-anti="scan">Scan it</button><button class="chip" data-anti="rules">Give me humanising rules</button></div><div class="result" id="antiResult">Paste something above, then tap Scan it.</div><p class="note">This is a heuristic, not an AI detector. It looks for habits such as over-neat structure, filler phrases and generic transitions.</p></div>
+<section class="card odd" id="october">
+<div class="label">🎃 October weirdness</div>
+<h3>Why horror loves innocent sounds.</h3>
+<p>Music boxes, children's choirs and lullaby-like melodies are effective in horror partly because they carry associations of safety and childhood. Put them in the wrong context and the brain gets two incompatible messages at once: <em>safe sound, unsafe scene</em>.</p>
+<p>That mismatch is often creepier than simply throwing low strings and thunder at you. Horror composers have understood for decades that corruption of the familiar can be nastier than obvious menace.</p>
+<div class="quote">Nothing ruins childhood innocence quite like a music box playing one note too slowly in a corridor nobody should be standing in.</div>
 </section>
 
-<section class="panel" id="punch">
-<div class="card"><h3>🥁 Punchline Lab</h3><label for="punchInput">Ordinary setup or object</label><input id="punchInput" placeholder="e.g. memory foam, airport security, a kettle"><div class="actions"><button class="primary" id="punchGo">Make it funny</button></div><div class="result" id="punchResult">Give me something ordinary. I'll show you several comic directions.</div></div>
-</section>
-
-<section class="panel" id="innuendo">
-<div class="card"><h3>😏 Innuendo Engine</h3><label for="innInput">Innocent object or situation</label><input id="innInput" placeholder="e.g. umbrella, bakery, hotel key"><div class="chips"><button class="chip on" data-spice="mild">Mild</button><button class="chip" data-spice="cheeky">Cheeky</button><button class="chip" data-spice="feral">Feral</button></div><div class="actions"><button class="primary" id="innGo">Corrupt it</button></div><div class="result" id="innResult">Some objects are innocent only because nobody has tried hard enough.</div></div>
-</section>
-
-<section class="panel" id="duel">
-<div class="card"><h3>⚔️ Model Duel</h3><label for="duelInput">Task</label><textarea id="duelInput" placeholder="e.g. Write five dry, human-sounding jokes about an airport delay."></textarea><div class="actions"><button class="primary" id="duelGo">Build three prompts</button></div><div class="duel" id="duelResult"></div><p class="note">The page does not call any model. It builds prompts you can copy into ChatGPT, Claude and Grok for a blind comparison.</p></div>
-</section>
+<footer>
+Based on Grok's public Morning Handover for 2 Oct 2026. Studio is commentary and rabbit-hole analysis, not a replacement for the source links or the full brief.
+</footer>
 </main>
-<div class="toast" id="toast">Copied</div>
 
 <script>
 (()=>{
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function openDrawer(on){document.body.classList.toggle('open',on);$('#burger').setAttribute('aria-expanded',on?'true':'false')}
-$('#burger').onclick=()=>openDrawer(!document.body.classList.contains('open'));$('#scrim').onclick=()=>openDrawer(false);document.addEventListener('keydown',e=>{if(e.key==='Escape')openDrawer(false)});
-function show(id){$$('.panel').forEach(p=>p.classList.remove('active'));const el=$('#'+id);if(el){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'start'});randomise(id)}openDrawer(false)}
-$$('[data-open]').forEach(b=>b.onclick=()=>show(b.dataset.open));
-function pick(a){return a[Math.floor(Math.random()*a.length)]}
-function toast(t='Copied'){const x=$('#toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1300)}
-async function copy(t){try{await navigator.clipboard.writeText(t);toast()}catch(e){prompt('Copy this:',t)}}
-
-const rabbit=[
-['The phantom island of Hy-Brasil','A legendary island said to appear west of Ireland only intermittently. It appeared on maps for centuries despite never being verified. A perfect rabbit hole if you like the point where cartography, folklore and human wishful thinking blur together.'],
-['Why abandoned shopping centres feel uncanny','Part architecture, part memory, part expectation violation: a place designed for crowds becomes strangely theatrical when empty. Look into liminal spaces, dead malls and environmental psychology.'],
-['The language of fake memories','Explore the misinformation effect, source-monitoring errors and why vividness is not the same thing as accuracy. The brain is less courtroom stenographer, more enthusiastic editor.'],
-['Numbers stations','Shortwave radio stations have broadcast strings of numbers, tones and coded phrases for decades. Many are associated with intelligence work, yet the broadcasts sound like the world’s least reassuring bedtime story.'],
-['Why certain intervals sound sinister','Try the tritone, chromatic descent and unstable harmony. Horror composers exploit expectation, tension and timbre as much as melody. Your ears are doing predictive processing while the violins misbehave.'],
-['The Cotard delusion','A rare psychiatric syndrome in which a person may believe they are dead, do not exist, or have lost organs. Disturbing, but fascinating for what it reveals about self-models and belief.'],
-['How time changes when nothing happens','Look into prospective vs retrospective time judgement, novelty, attention and event boundaries. The same hour can crawl while you live it and vanish when you remember it.'],
-['The Voynich manuscript','An illustrated manuscript in an unknown script, full of strange plants, diagrams and bathing figures. Whether cipher, constructed language or elaborate historical oddity, it has resisted confident explanation.']
-];
-const weird=[
-['Why your own recorded voice sounds wrong','You normally hear your voice through both air conduction and vibration through your skull. A recording removes the bone-conducted component, so the familiar voice suddenly becomes an outsider with your passwords.'],
-['Why a song can feel faster or slower without changing tempo','Perceived speed depends on subdivision, density, accents, groove and expectation. A sparse track at 120 BPM can feel languid; a frantic one at the same tempo can feel as if it has somewhere urgent to be.'],
-['Why déjà vu feels like memory without a memory','One explanation is a mismatch between familiarity and recollection: the brain produces the feeling of “known” without retrieving a matching episode. The sensation arrives wearing a memory-shaped coat but refuses to show ID.'],
-['Why silence can feel physically loud','After sustained noise, removing sound can make internal sensations suddenly salient: tinnitus-like ringing, pulse, breath, room tone. The auditory system keeps listening even when the world has stopped volunteering material.'],
-['Why horror music loves children’s sounds','Music boxes, lullabies and children’s choirs carry strong associations with safety and innocence. Horror flips the prediction: familiar timbres appear in the wrong emotional context, producing cognitive dissonance and unease.'],
-['Why coincidences multiply when you notice one','Attention changes what gets encoded. Once a theme becomes salient, matching examples are easier to notice and remember. The world may not have changed; your filtering system has started wearing a highlighter.']
-];
-const til=[
-['Octopuses have three hearts.','Two pump blood through the gills; one circulates it around the body.'],
-['A day on Venus is longer than a Venusian year.','Venus rotates so slowly that one full rotation takes longer than one trip around the Sun.'],
-['The word “nightmare” originally referred to a supernatural being.','The “mare” was a spirit believed to press on sleepers, long before the word simply meant a bad dream.'],
-['Humans can recognise familiar music from extremely short snippets.','For well-known songs, recognition can happen from fragments far shorter than a full musical phrase.'],
-['The smell after rain has a name: petrichor.','The term was coined in the 1960s for the earthy scent associated with rain on dry ground.'],
-['Some languages use absolute directions instead of left and right.','Speakers may routinely orient with cardinal directions such as north or south, which changes the spatial information they habitually track.']
-];
-const dyk=[
-['The famous shrieking string effect in horror owes a lot to very high-register, dissonant writing rather than simply loudness.','“Psycho” — Bernard Herrmann','A masterclass in how orchestration can make a shower curtain feel legally threatening.'],
-['“Tubular Bells” was not written as horror music. Its association with The Exorcist made the opening feel sinister to generations of listeners.','“Tubular Bells, Pt. 1” — Mike Oldfield','Context can permanently repaint a piece of music.'],
-['The tritone was later nicknamed “the devil in music,” but the popular story that medieval authorities literally banned it is exaggerated.','“Black Sabbath” — Black Sabbath','That opening interval still knows exactly what it is doing.'],
-['The theremin is played without touching it. Hand position near two antennas controls pitch and volume.','“The Day the Earth Stood Still” score — Bernard Herrmann','Nothing says unease quite like an instrument apparently haunted by personal space.'],
-['Minor keys are not automatically sad or scary. Tempo, timbre, harmony, rhythm and expectation matter enormously.','“Red Right Hand” — Nick Cave & the Bad Seeds','Menace is a team sport.'],
-['A heartbeat-like pulse can increase tension because the body easily maps regular low-frequency rhythm onto physiological expectation.','“Halloween Theme” — John Carpenter','Five-four meter and relentless repetition: suburban panic with excellent timekeeping.']
-];
-const hall=[
-['Corpse roads','Across parts of Britain, traditional routes were used to carry the dead to burial grounds. Later folklore attached ghosts and supernatural stories to some of these paths.','Historical routes are real; individual haunting stories belong to folklore.'],
-['The fear of premature burial','In the 18th and 19th centuries, anxiety about being buried alive inspired “safety coffins” with bells, tubes or signalling devices.','The devices are documented; popular stories often exaggerate how commonly they were used.'],
-['The Brown Lady photograph','A famous 1930s photograph was claimed to show a ghostly figure on a staircase at Raynham Hall. It became an icon of paranormal photography.','The ghost interpretation is disputed; treat it as a cultural artefact, not proof of the supernatural.'],
-['Why masks become uncanny','Masks remove or freeze normal facial cues while retaining just enough humanness to trigger social perception. The brain gets a face-shaped signal with missing behavioural information.','Psychology gives several plausible mechanisms; there is no single “uncanny mask” circuit.'],
-['Memento mori jewellery','People have worn rings, brooches and lockets decorated with skulls, coffins, hair or memorial inscriptions as reminders of mortality and remembrance.','Macabre by modern standards; often intimate rather than purely spooky.'],
-['The death whistle','Certain archaeological whistles from ancient Mexico produce harsh, scream-like sounds. Popular claims about their exact ritual purpose are debated.','The artefacts are real; dramatic modern interpretations often outrun the evidence.']
-];
-const major=['The Fool','The Magician','The High Priestess','The Empress','The Emperor','The Hierophant','The Lovers','The Chariot','Strength','The Hermit','Wheel of Fortune','Justice','The Hanged Man','Death','Temperance','The Devil','The Tower','The Star','The Moon','The Sun','Judgement','The World'];
-const tarotIdeas=[
-['tension','These cards pull in different directions. Read the contrast before trying to force them into one message.'],
-['echo','The second card amplifies a theme already present in the first. Look for repetition in agency, restraint, desire or uncertainty.'],
-['sequence','Read them as movement: what the first card sets up, the second card complicates or transforms.'],
-['shadow','Ask what each card looks like when overdone. Sometimes the interesting reading is in the excess rather than the textbook virtue.'],
-['role reversal','Imagine the first card describing the inner state and the second describing how that state appears from outside.']
-];
-
-function randomise(id){
-if(id==='rabbit'){const x=pick(rabbit);$('#rabbitText').textContent=x[0];$('#rabbitWhy').textContent=x[1]}
-if(id==='weird'){const x=pick(weird);$('#weirdTitle').textContent=x[0];$('#weirdBody').textContent=x[1]}
-if(id==='til'){const x=pick(til);$('#tilFact').textContent=x[0];$('#tilMore').textContent=x[1]}
-if(id==='dyk'){const x=pick(dyk);$('#dykFact').textContent=x[0];$('#musicTitle').textContent=x[1];$('#musicWhy').textContent=x[2]}
-if(id==='halloween'){const x=pick(hall);$('#hallTitle').textContent=x[0];$('#hallBody').textContent=x[1];$('#hallNote').textContent=x[2]}
-if(id==='tarot'){let a=pick(major),b=pick(major);while(b===a)b=pick(major);const t=pick(tarotIdeas);$('#tarotPair').textContent=a+' + '+b;$('#tarotBody').textContent='Try the “'+t[0]+'” lens: '+t[1]}
-}
-$$('[data-random]').forEach(b=>b.onclick=()=>randomise(b.dataset.random));
-$('#surprise').onclick=()=>show(pick(['rabbit','weird','til','dyk','halloween','tarot','anti','punch','innuendo','duel']));
-
-function scanAI(text){
-const low=text.toLowerCase();let flags=[];
-const phrases=['delve','tapestry','in today\'s fast-paced world','it is important to note','unlock','elevate','journey','realm of','moreover','furthermore','in conclusion','game-changer','seamlessly','robust','transformative','whether you\'re'];
-phrases.forEach(p=>{if(low.includes(p))flags.push('Possible AI-flavoured phrase: “'+p+'”')});
-const em=(text.match(/—/g)||[]).length;if(em>=3)flags.push('A lot of em dashes. Not inherently AI, but models lean on them when polishing.');
-const col=(text.match(/:/g)||[]).length;if(col>=4)flags.push('Many colon-led mini-sections can make prose feel over-structured.');
-const paras=text.split(/\n\s*\n/).filter(Boolean);if(paras.length>=4&&paras.every(p=>p.length>80&&p.length<450))flags.push('Paragraphs are unusually uniform in size.');
-if(/\b(firstly|secondly|finally)\b/i.test(text))flags.push('Very explicit sequencing can feel generated if the piece does not need it.');
-if(!/[?!]/.test(text)&&text.length>500)flags.push('Long passage with little tonal variation. Human prose often changes pace more.');
-return flags;
-}
-$$('[data-anti]').forEach(b=>b.onclick=()=>{
-const text=$('#antiInput').value.trim();
-if(b.dataset.anti==='rules'){
-$('#antiResult').innerHTML='<b>Humanising rules</b><ul><li>Replace one abstract statement with a concrete object or scene.</li><li>Break one perfectly balanced paragraph.</li><li>Delete the sentence that merely restates the previous one.</li><li>Keep one odd, personal turn of phrase instead of sanding it smooth.</li><li>Vary sentence length on purpose.</li><li>Prefer a specific verb over a motivational adjective.</li></ul>';return}
-if(!text){$('#antiResult').textContent='Paste something first.';return}
-const f=scanAI(text);$('#antiResult').innerHTML=f.length?'<b>Things I would inspect</b><ul>'+f.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'<b>No obvious cliché flags.</b><p>This does not prove it is human-written; it only means the simple style checks did not find much.</p>';
-});
-
-$('#punchGo').onclick=()=>{
-const x=$('#punchInput').value.trim()||'the coffee machine';
-const ideas=[
-['Misdirection','Start sincere, then reveal the problem is embarrassingly petty: “I thought '+x+' had changed my life. It had. Mostly by making me late.”'],
-['Escalation','Treat a tiny inconvenience as a constitutional crisis involving '+x+'.'],
-['Self-sabotage','Make yourself the casualty of your own attempt to look competent around '+x+'.'],
-['Literal turn','Take a common phrase involving '+x+' painfully literally.'],
-['Callback','Mention one odd detail about '+x+' early, then let it return at the end as the final insult.']
-];
-$('#punchResult').innerHTML='<b>Five directions</b><ul>'+ideas.map(i=>'<li><b>'+i[0]+':</b> '+i[1]+'</li>').join('')+'</ul>';
-};
-
-let spice='mild';$$('[data-spice]').forEach(b=>b.onclick=()=>{$$('[data-spice]').forEach(x=>x.classList.remove('on'));b.classList.add('on');spice=b.dataset.spice});
-$('#innGo').onclick=()=>{
-const x=$('#innInput').value.trim()||'umbrella';
-const banks={
-mild:[
-'Bought a new '+x+'. Very well made. I have already developed inappropriate confidence.',
-'The '+x+' looked innocent in the shop. That was before we were alone.',
-'I only wanted a practical '+x+'. Apparently I have a type.'
-],
-cheeky:[
-'The '+x+' promised good handling. Naturally I demanded a demonstration.',
-'I have been told to stop judging a '+x+' by its size. This advice arrived suspiciously late.',
-'Apparently the '+x+' is “easy to use.” I admire optimism in a product description.'
-],
-feral:[
-'The '+x+' has excellent grip, unreasonable stamina and now an inflated opinion of itself.',
-'I spent ten minutes testing the '+x+' and have decided the instruction manual lacks ambition.',
-'The '+x+' said “firm pressure.” Finally, literature with a plot.'
-]};
-$('#innResult').innerHTML='<b>'+spice[0].toUpperCase()+spice.slice(1)+'</b><ul>'+pick(banks[spice]).split('\n').map(s=>'<li>'+s+'</li>').join('')+'</ul><p class="note">Tap again for another angle.</p>';
-};
-
-$('#duelGo').onclick=()=>{
-const task=$('#duelInput').value.trim();if(!task){$('#duelResult').innerHTML='<div class="result">Give me a task first.</div>';return}
-const prompts=[
-['ChatGPT','Do this task with strong judgement and natural prose. Avoid generic AI phrasing, unnecessary headings and filler. Preserve oddness, rhythm and specificity. Task: '+task],
-['Claude','Do this task as an exacting editor-writer. Prioritise voice, restraint, subtext and sentence-level variation. Cut anything that sounds polished-but-empty. Task: '+task],
-['Grok','Do this task with sharp observational energy. Prefer specific jokes, cultural awareness and surprising turns over generic punchlines. Do not force edginess. Task: '+task]
-];
-$('#duelResult').innerHTML=prompts.map((p,i)=>'<div class="duel-card"><h4>'+p[0]+'</h4><p>'+p[1].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p><button class="copy" data-copy="'+i+'">Copy prompt</button></div>').join('');
-$$('[data-copy]').forEach(b=>b.onclick=()=>copy(prompts[+b.dataset.copy][1]));
-};
-
-const mo=new MutationObserver(()=>{
-[...document.querySelectorAll('.sd-host')].forEach(h=>{try{if(h.shadowRoot&&h.shadowRoot.querySelector('.strip'))h.remove()}catch(e){}});
-});
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function drawer(on){document.body.classList.toggle('open',on);$('#burger').setAttribute('aria-expanded',on?'true':'false')}
+$('#burger').onclick=()=>drawer(!document.body.classList.contains('open'));$('#scrim').onclick=()=>drawer(false);document.addEventListener('keydown',e=>{if(e.key==='Escape')drawer(false)});
+$$('[data-go]').forEach(b=>b.onclick=()=>{document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth',block:'start'});drawer(false)});
+const mo=new MutationObserver(()=>{[...document.querySelectorAll('.sd-host')].forEach(h=>{try{if(h.shadowRoot&&h.shadowRoot.querySelector('.strip'))h.remove()}catch(e){}})});
 mo.observe(document.body,{childList:true,subtree:false});
-
-randomise('rabbit');randomise('weird');randomise('til');randomise('dyk');randomise('halloween');randomise('tarot');
 })();
 </script>
 </body>
